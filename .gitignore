@@ -5,3 +5,4 @@ pdf
 *.xml
 *.txt
 *.csv
+!README.txt

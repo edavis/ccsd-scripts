@@ -20,19 +20,6 @@ import re
 import tablib
 from lxml import etree
 
-# (xpath, number of digits in the 'Points Possible' column)
-es_element_map = {
-    "Academic Growth":      (etree.XPath("//page[@id='1']//text[contains(@bbox, '510.359')]/text()"), 2),
-    "Academic Growth/Math": (etree.XPath("//page[@id='2']//text[contains(@bbox, '495.359')]/text()"), 2),
-
-    "Academic Achievement": (etree.XPath("//page[@id='1']//text[contains(@bbox, '480.359')]/text()"), 2),
-    "Academic Growth Gaps": (etree.XPath("//page[@id='1']//text[contains(@bbox, '450.359')]/text()"), 2),
-    "Other Factors":        (etree.XPath("//page[@id='1']//text[contains(@bbox, '420.359')]/text()"), 2),
-    "AYP":                  (etree.XPath("//page[@id='1']//text[contains(@bbox, '388.565')]/text()"), 0),
-    "Focus Goal":           (etree.XPath("//page[@id='1']//text[contains(@bbox, '355.565')]/text()"), 0),
-    "Total Score":          (etree.XPath("//page[@id='1']//textbox[contains(@bbox, '699.4')]//text[@size]/text()"), 0),
-}
-
 def clean(raw):
     return ''.join(raw).strip()
 
@@ -60,20 +47,6 @@ def extract_from_pdf(fname, school_type):
         pass
 
     return ret
-
-    # values = [re.search('\d\d\d-([^.]+)\.xml$', fname).group(1)]
-    # for title, (xpath, digits) in element_map.iteritems():
-    #     raw = xpath(doc)
-    #     if digits:
-    #         raw = raw[:-digits]
-
-    #     value = ''.join(raw).strip()
-    #     if not value:
-    #         print "*** Empty value for '%s'" % title
-    #         raise SystemExit
-
-    #     values.append(value)
-    #     print "%-25s: %s" % (title, value)
 
 def main():
     import argparse

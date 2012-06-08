@@ -152,6 +152,7 @@ def extract_from_pdf(fname, school_type):
 
 def main():
     import argparse
+    from operator import itemgetter
     parser = argparse.ArgumentParser()
     parser.add_argument("input", nargs='+', metavar="XML")
     parser.add_argument("-t", "--school-type")
@@ -159,17 +160,25 @@ def main():
     args = parser.parse_args()
     number_keys = 35
 
+    output = tablib.Dataset()
+
     for fname in args.input:
         print "Parsing '%s'..." % fname
         info = extract_from_pdf(fname, args.school_type)
         assert len(info.keys()) == number_keys, len(info.keys())
+        values = []
 
-        for k, v in sorted(info.iteritems()):
-            print "  %-40s: %s" % (k, v)
-            if not v:
-                print "*** Missing value for '%s'" % k
-                raise SystemExit
-        print
+        if not output.headers:
+            output.headers = sorted(info.keys())
+
+        for k, v in sorted(info.iteritems(), key=itemgetter(0)):
+            values.append(v)
+
+        output.append(values)
+
+    print "Writing to '%s'..." % args.output
+    with open(args.output, 'wb') as fp:
+        fp.write(output.csv)
 
 if __name__ == "__main__":
     main()

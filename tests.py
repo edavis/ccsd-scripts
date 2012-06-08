@@ -29,6 +29,25 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Academic Achievement/Reading/Catch Up' : '0',
         'Academic Achievement/Reading/Keep Up'  : '0.4',
         'Academic Achievement/Reading/Move Up'  : '-',
+
+        # p3
+        'Growth Gaps/Math/FRLE'          : '3',
+        'Growth Gaps/Math/Minority'      : '3',
+        'Growth Gaps/Math/Disability'    : '0',
+        'Growth Gaps/Math/LEP'           : '3',
+
+        'Growth Gaps/Reading/FRLE'       : '0',
+        'Growth Gaps/Reading/Minority'   : '0',
+        'Growth Gaps/Reading/Disability' : '0',
+        'Growth Gaps/Reading/LEP'        : '0',
+
+        'Other Factors/Avg. Daily Attendance'   : '2',
+        'Other Factors/LEP (>24pt gain)'        : '1',
+        'Other Factors/LEP (Attain lvl 5)'      : '1',
+        'Other Factors/IEP'                     : '2',
+        'Other Factors/6th Grade'               : '0',
+        'Other Factors/Student Survey Positive' : '1',
+        'Other Factors/Parent Engagement Plan'  : '3',
     },
 
     'xml/ES/202-Wolff, Elise L ES.xml': {
@@ -46,6 +65,26 @@ ELEMENTARY_SCHOOL_POINTS = {
     'xml/ES/205-Snyder, William E ES.xml': {
         'Other Indicators'     : '10.5',
         'Total Score'          : '88.51',
+    },
+
+    'xml/ES/209-Bonner, John W ES.xml': {
+        'Growth Gaps/Math/FRLE'          : '3',
+        'Growth Gaps/Math/Minority'      : '3',
+        'Growth Gaps/Math/Disability'    : 'NA',
+        'Growth Gaps/Math/LEP'           : 'NA',
+
+        'Growth Gaps/Reading/FRLE'       : '3',
+        'Growth Gaps/Reading/Minority'   : '3',
+        'Growth Gaps/Reading/Disability' : 'NA',
+        'Growth Gaps/Reading/LEP'        : 'NA',
+
+        'Other Factors/Avg. Daily Attendance'   : '2',
+        'Other Factors/LEP (>24pt gain)'        : 'NA',
+        'Other Factors/LEP (Attain lvl 5)'      : 'NA',
+        'Other Factors/IEP'                     : '2',
+        'Other Factors/6th Grade'               : '2',
+        'Other Factors/Student Survey Positive' : '1',
+        'Other Factors/Parent Engagement Plan'  : '3',
     },
 
     'xml/ES/212-King, Jr, Martin Luther ES.xml': {

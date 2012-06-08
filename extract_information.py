@@ -126,6 +126,35 @@ def extract_from_pdf(fname, school_type):
                     text = extract_text(textbox)
                     ret[category] = only_digits(text) if category in digits_only else text
 
+        ###########################################################################
+        p3_categories = {
+            "Growth Gaps/Math/FRLE"                 : "234.360,519.725,238.916,527.874",
+            "Growth Gaps/Math/Minority"             : "234.360,498.725,238.916,506.874",
+            "Growth Gaps/Math/Disability"           : "234.360,477.725,238.916,485.874",
+            "Growth Gaps/Math/LEP"                  : "234.360,456.485,238.916,464.634",
+
+            "Growth Gaps/Reading/FRLE"              : "234.360,399.725,238.916,407.874",
+            "Growth Gaps/Reading/Minority"          : "234.360,399.725,238.916,407.874",
+            "Growth Gaps/Reading/Disability"        : "231.240,378.725,242.162,386.874",
+            "Growth Gaps/Reading/LEP"               : "231.240,357.365,242.162,365.514",
+
+            "Other Factors/Avg. Daily Attendance"   : "234.360,285.605,238.916,293.754",
+            "Other Factors/LEP (>24pt gain)"        : "231.240,267.605,242.162,275.754",
+            "Other Factors/LEP (Attain lvl 5)"      : "231.240,249.485,242.162,257.634",
+            "Other Factors/IEP"                     : "234.360,219.605,238.916,227.754",
+            "Other Factors/6th Grade"               : "234.360,189.605,238.916,197.754",
+            "Other Factors/Student Survey Positive" : "234.360,171.605,238.916,179.754",
+            "Other Factors/Parent Engagement Plan"  : "234.360,153.605,238.916,161.754",
+        }
+
+        textboxes = doc.xpath("//page[@id='3']//textbox")
+        for textbox in textboxes:
+            for category, location in p3_categories.iteritems():
+                match = create_boundaries(location).search(textbox.attrib['bbox'])
+                if match and category not in ret:
+                    text = extract_text(textbox)
+                    ret[category] = only_digits(text) if category in digits_only else text
+
     return ret
 
 def main():
@@ -135,7 +164,7 @@ def main():
     parser.add_argument("-t", "--school-type")
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
-    number_keys = 20
+    number_keys = 35
 
     for fname in args.input:
         print "Parsing '%s'..." % fname

@@ -100,11 +100,14 @@ def extract_from_pdf(fname, school_type):
                     ret[category] = only_digits(text) if category in digits_only else text
 
         ###########################################################################
+        # luckily, page 2 values *are* identical throughout
         p2_categories = {
             "Academic Growth/Math"                  : "221.640,495.359,233.885,505.672",
+            "Academic Growth/Math/Count"            : "419.280,495.359,437.648,506.152",
             "Academic Growth/Reading"               : "221.640,465.359,233.885,475.672",
-            "Academic Achievement/Math"             : "224.640,375.359,230.763,385.672",
+            "Academic Growth/Reading/Count"         : "419.880,465.359,438.248,476.152",
 
+            "Academic Achievement/Math"             : "224.640,375.359,230.763,385.672",
             "Academic Achievement/Math/Catch Up"    : "224.640,345.359,230.763,355.672",
             "Academic Achievement/Math/Keep Up"     : "224.640,315.359,230.763,325.672",
             "Academic Achievement/Math/Move Up"     : "225.840,285.239,229.562,296.032",

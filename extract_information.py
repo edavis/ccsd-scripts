@@ -20,6 +20,8 @@ import re
 import tablib
 from lxml import etree
 
+DIGITS_ONLY = {'Academic Achievement', 'Other Indicators'}
+
 def create_boundaries(coord, default_size=10):
     """
     Generate a coordinate matching regexp that can do "fuzzy matching."
@@ -59,18 +61,13 @@ def create_boundaries(coord, default_size=10):
         s.append('(' + '|'.join("%d\.\d{3}" % elem for elem in xrange(arg - size, arg + size + 1)) + ')')
     return re.compile(','.join(s))
 
-def extract_text(textbox):
+def extract_text(textbox, category):
     """
     Given a textbox, return its concat'd text elements.
     """
     text = textbox.xpath("./textline/text[@bbox]/text()")
-    return ''.join(text).strip()
-
-def only_digits(s):
-    """
-    Strip string of everything except digits and a period.
-    """
-    return re.sub('[^\d.]', '', s)
+    s = ''.join(text).strip()
+    return re.sub('[^\d.]+', '', s) if category in DIGITS_ONLY else s
 
 def extract_from_pdf(fname, school_type):
     """
@@ -89,15 +86,13 @@ def extract_from_pdf(fname, school_type):
             "Focus Goal"           : "639.960,    355.565, 714.096,    365.150",
             "Total Score"          : "663.000:20, 313.440, 699.454,    323.989",
         }
-        digits_only = {'Academic Achievement', 'Other Indicators'}
 
         textboxes = doc.xpath("//page[@id='1']//textbox")
         for textbox in textboxes:
             for category, location in p1_categories.iteritems():
                 match = create_boundaries(location).search(textbox.attrib['bbox'])
                 if match and category not in ret:
-                    text = extract_text(textbox)
-                    ret[category] = only_digits(text) if category in digits_only else text
+                    ret[category] = extract_text(textbox, category)
 
         ###########################################################################
         # luckily, page 2 values *are* identical throughout
@@ -123,8 +118,7 @@ def extract_from_pdf(fname, school_type):
             for category, location in p2_categories.iteritems():
                 match = create_boundaries(location).search(textbox.attrib['bbox'])
                 if match and category not in ret:
-                    text = extract_text(textbox)
-                    ret[category] = only_digits(text) if category in digits_only else text
+                    ret[category] = extract_text(textbox, category)
 
         ###########################################################################
         p3_categories = {
@@ -152,8 +146,7 @@ def extract_from_pdf(fname, school_type):
             for category, location in p3_categories.iteritems():
                 match = create_boundaries(location).search(textbox.attrib['bbox'])
                 if match and category not in ret:
-                    text = extract_text(textbox)
-                    ret[category] = only_digits(text) if category in digits_only else text
+                    ret[category] = extract_text(textbox, category)
 
     return ret
 

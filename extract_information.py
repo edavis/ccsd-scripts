@@ -101,8 +101,18 @@ def extract_from_pdf(fname, school_type):
 
         ###########################################################################
         p2_categories = {
-            "Academic Growth/Math" : "221.640,495.359,233.885,505.672",
-            "Academic Growth/Reading": "221.640,465.359,233.885,475.672",
+            "Academic Growth/Math"                  : "221.640,495.359,233.885,505.672",
+            "Academic Growth/Reading"               : "221.640,465.359,233.885,475.672",
+            "Academic Achievement/Math"             : "224.640,375.359,230.763,385.672",
+
+            "Academic Achievement/Math/Catch Up"    : "224.640,345.359,230.763,355.672",
+            "Academic Achievement/Math/Keep Up"     : "224.640,315.359,230.763,325.672",
+            "Academic Achievement/Math/Move Up"     : "225.840,285.239,229.562,296.032",
+
+            "Academic Achievement/Reading"          : "219.960,255.239,235.445,265.552",
+            "Academic Achievement/Reading/Catch Up" : "224.640,225.239,230.763,235.552",
+            "Academic Achievement/Reading/Keep Up"  : "219.960,195.239,235.445,205.552",
+            "Academic Achievement/Reading/Move Up"  : "225.840,165.239,229.562,176.032",
         }
 
         textboxes = doc.xpath("//page[@id='2']//textbox")
@@ -123,16 +133,29 @@ def main():
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
 
-
-
     for fname in args.input:
         categories = {
-            # p1
-            'Academic Growth', 'Academic Achievement', 'Academic Growth Gaps',
-            'Other Indicators', 'AYP', 'Focus Goal', 'Total Score',
+            'Academic Growth',
+            'Academic Achievement',
+            'Academic Growth Gaps',
+            'Other Indicators',
+            'AYP',
+            'Focus Goal',
+            'Total Score',
 
-            # p2
-            'Academic Growth/Math', 'Academic Growth/Reading'}
+            'Academic Growth/Math',
+            'Academic Growth/Reading',
+
+            'Academic Achievement/Math',
+            'Academic Achievement/Math/Catch Up',
+            'Academic Achievement/Math/Keep Up',
+            'Academic Achievement/Math/Move Up',
+
+            'Academic Achievement/Reading',
+            'Academic Achievement/Reading/Catch Up',
+            'Academic Achievement/Reading/Keep Up',
+            'Academic Achievement/Reading/Move Up',
+        }
 
         print "Parsing '%s'..." % fname
         info = extract_from_pdf(fname, args.school_type)
@@ -141,7 +164,7 @@ def main():
                 categories.remove(k)
 
             # import pdb; pdb.set_trace()
-            print "  %-25s: %s" % (k, v)
+            print "  %-35s: %s" % (k, v)
             if not v:
                 print "*** Missing value for '%s'" % k
                 raise SystemExit

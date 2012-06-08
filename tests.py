@@ -6,22 +6,33 @@ ELEMENTARY_SCHOOL_POINTS = {
         'School'               : 'Bass, John C ES',
 
         # p1
-        'Academic Growth'         : '31',
-        'Academic Achievement'    : '12.9',
-        'Academic Growth Gaps'    : '9',
-        'Other Indicators'        : '10',
-        'AYP'                     : 'No',
-        'Focus Goal'              : '5 Percent Bonus',
-        'Total Score'             : '69.18',
+        'Academic Growth'      : '31',
+        'Academic Achievement' : '12.9',
+        'Academic Growth Gaps' : '9',
+        'Other Indicators'     : '10',
+        'AYP'                  : 'No',
+        'Focus Goal'           : '5 Percent Bonus',
+        'Total Score'          : '69.18',
 
         # p2
-        'Academic Growth/Math'    : '17',
-        'Academic Growth/Reading' : '14',
+        'Academic Growth/Math'                  : '17',
+        'Academic Growth/Reading'               : '14',
+
+        'Academic Achievement/Math'             : '5',
+        'Academic Achievement/Math/Catch Up'    : '3',
+        'Academic Achievement/Math/Keep Up'     : '2',
+        'Academic Achievement/Math/Move Up'     : '-',
+
+        'Academic Achievement/Reading'          : '2.5',
+        'Academic Achievement/Reading/Catch Up' : '0',
+        'Academic Achievement/Reading/Keep Up'  : '0.4',
+        'Academic Achievement/Reading/Move Up'  : '-',
     },
 
     'xml/ES/202-Wolff, Elise L ES.xml': {
         'Total Score'          : '70.7',
         'AYP'                  : 'AYP',
+        'Academic Growth/Math' : '10',
     },
 
     'xml/ES/203-Tarr, Sheila R ES.xml': {

@@ -20,31 +20,98 @@ import re
 import tablib
 from lxml import etree
 
-def clean(raw):
-    return ''.join(raw).strip()
+def create_boundaries(coord, default_size=10):
+    """
+    Generate a coordinate matching regexp that can do "fuzzy matching."
+
+    The PDFs provided by CCSD are programatically generated, but the
+    point locations for certain elements are not identical between
+    each PDF.  This means we can't do a simple search for identical
+    @bbox attribute values and expect it to work.
+
+    The differences between point locations are usually not large, but
+    they sometimes can be.  Here's what we do:
+
+    Given the location point '663.000,313.440,699.454,323.989' we will
+    take each whole number (e.g., 663, 313, 699, 323) and (by default)
+    create a range from [n-default_size, n+default_size] (inclusive).
+
+    We then '|'-join each number in the range so it becomes
+    essentially an OR statement.  So with a default_size=5, the above
+    coordinate point becomes:
+
+    r'(658\.\d{3}|659\.\d{3}|...|667\.\d{3}|668\.\d{3}),(308\.\d{3}...),...
+
+    EXCEPT, sometimes a particular digit (e.g., 313) will need to be
+    (way) larger than default_size but you don't want each digit
+    getting that treatment.
+
+    In this case, after each digit's fractional part an optional ':N'
+    can be supplied which will set that digit's "range."  For example:
+    '663.000:10' will range between 653 and 673. When ':N' is omitted,
+    the digit uses the default_size.
+    """
+    s = []
+    args = re.findall('(\d+)[.]\d{3}:?(\d*)', coord)
+    for arg, size in args:
+        size = int(size) if size else default_size
+        arg = int(arg)
+        s.append('(' + '|'.join("%d\.\d{3}" % elem for elem in xrange(arg - size, arg + size + 1)) + ')')
+    return re.compile(','.join(s))
+
+def extract_text(textbox):
+    """
+    Given a textbox, return its concat'd text elements.
+    """
+    text = textbox.xpath("./textline/text[@bbox]/text()")
+    return ''.join(text).strip()
+
+def only_digits(s):
+    """
+    Strip string of everything except digits and a period.
+    """
+    return re.sub('[^\d.]', '', s)
 
 def extract_from_pdf(fname, school_type):
     """
-    Given a filename path to a PDF, return a dictionary of its
-    relevant categories/points.
+    Return a dictionary of {category: value} for a given school XML file.
     """
     doc = etree.parse(fname)
     ret = {'School': re.search('\d\d\d-([^.]+)\.xml$', fname).group(1)}
 
     if school_type == 'ES':
-        ret['Academic Growth']      = clean(doc.xpath("//textbox[@bbox='476.280,510.359,488.405,520.672']//text/text()"))
-        ret['Academic Achievement'] = re.sub('[^\d.]', '', clean(doc.xpath("//textbox[@bbox='471.360,478.564,533.751,490.672']//text/text()")))
-        ret['Academic Growth Gaps'] = clean(doc.xpath("//textbox[@bbox='479.280,450.359,485.402,460.672']//text/text()"))
-        ret['Other Indicators']     = clean(doc.xpath("//textbox[@bbox='476.280,420.359,488.405,430.672']//text/text()"))
-        ret['AYP']                  = clean(doc.xpath("//textbox[@bbox='669.000,388.565,682.196,398.150']//text/text()"))
-        ret['Focus Goal']           = clean(doc.xpath("//textbox[@bbox='639.960,355.565,714.096,365.150']//text/text()"))
-        ret['Total Score']          = clean(doc.xpath("//textbox[@bbox='663.000,313.440,699.454,323.989']//text/text()"))
+        p1_categories = {
+            "Academic Growth"      : "476.280,    510.359, 488.405,    520.672",
+            "Academic Achievement" : "476.040,    480.359, 488.285:50, 490.672",
+            "Academic Growth Gaps" : "479.280,    450.359, 485.402,    460.672",
+            "Other Indicators"     : "476.280,    420.359, 488.405:50, 430.672",
+            "AYP"                  : "669.000,    388.565, 682.196,    398.150",
+            "Focus Goal"           : "639.960,    355.565, 714.096,    365.150",
+            "Total Score"          : "663.000:20, 313.440, 699.454,    323.989",
+        }
+        digits_only = {'Academic Achievement', 'Other Indicators'}
 
-    elif school_type == 'MS':
-        pass
+        textboxes = doc.xpath("//page[@id='1']//textbox")
+        for textbox in textboxes:
+            for category, location in p1_categories.iteritems():
+                match = create_boundaries(location).search(textbox.attrib['bbox'])
+                if match and category not in ret:
+                    text = extract_text(textbox)
+                    ret[category] = only_digits(text) if category in digits_only else text
 
-    elif school_type == 'HS':
-        pass
+        ###########################################################################
+        p2_categories = {
+            "Academic Growth/Math" : "221.640,495.359,233.885,505.672",
+            "Academic Growth/Reading": "221.640,465.359,233.885,475.672",
+        }
+
+        textboxes = doc.xpath("//page[@id='2']//textbox")
+        for textbox in textboxes:
+            for category, location in p2_categories.iteritems():
+                match = create_boundaries(location).search(textbox.attrib['bbox'])
+                if match and category not in ret:
+                    text = extract_text(textbox)
+                    ret[category] = only_digits(text) if category in digits_only else text
 
     return ret
 
@@ -56,10 +123,33 @@ def main():
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
 
+
+
     for fname in args.input:
+        categories = {
+            # p1
+            'Academic Growth', 'Academic Achievement', 'Academic Growth Gaps',
+            'Other Indicators', 'AYP', 'Focus Goal', 'Total Score',
+
+            # p2
+            'Academic Growth/Math', 'Academic Growth/Reading'}
+
         print "Parsing '%s'..." % fname
         info = extract_from_pdf(fname, args.school_type)
-        print info
+        for k, v in sorted(info.iteritems()):
+            if k in categories:
+                categories.remove(k)
+
+            # import pdb; pdb.set_trace()
+            print "  %-25s: %s" % (k, v)
+            if not v:
+                print "*** Missing value for '%s'" % k
+                raise SystemExit
+        print
+
+        if categories:
+            print categories
+            raise SystemExit
 
 if __name__ == "__main__":
     main()

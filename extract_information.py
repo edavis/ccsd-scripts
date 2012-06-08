@@ -135,47 +135,19 @@ def main():
     parser.add_argument("-t", "--school-type")
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
+    number_keys = 20
 
     for fname in args.input:
-        categories = {
-            'Academic Growth',
-            'Academic Achievement',
-            'Academic Growth Gaps',
-            'Other Indicators',
-            'AYP',
-            'Focus Goal',
-            'Total Score',
-
-            'Academic Growth/Math',
-            'Academic Growth/Reading',
-
-            'Academic Achievement/Math',
-            'Academic Achievement/Math/Catch Up',
-            'Academic Achievement/Math/Keep Up',
-            'Academic Achievement/Math/Move Up',
-
-            'Academic Achievement/Reading',
-            'Academic Achievement/Reading/Catch Up',
-            'Academic Achievement/Reading/Keep Up',
-            'Academic Achievement/Reading/Move Up',
-        }
-
         print "Parsing '%s'..." % fname
         info = extract_from_pdf(fname, args.school_type)
-        for k, v in sorted(info.iteritems()):
-            if k in categories:
-                categories.remove(k)
+        assert len(info.keys()) == number_keys, len(info.keys())
 
-            # import pdb; pdb.set_trace()
-            print "  %-35s: %s" % (k, v)
+        for k, v in sorted(info.iteritems()):
+            print "  %-40s: %s" % (k, v)
             if not v:
                 print "*** Missing value for '%s'" % k
                 raise SystemExit
         print
-
-        if categories:
-            print categories
-            raise SystemExit
 
 if __name__ == "__main__":
     main()

@@ -15,22 +15,30 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Total Score'          : '69.18',
 
         # p2
-        'Academic Growth/Math'                  : '17',
-        'Academic Growth/Math/Count'            : '258',
-        'Academic Growth/Math/MGP'              : '56',
-        'Academic Growth/Reading'               : '14',
-        'Academic Growth/Reading/Count'         : '259',
-        'Academic Growth/Reading/MGP'           : '48',
+        'Academic Growth/Math'                        : '17',
+        'Academic Growth/Math/Count'                  : '258',
+        'Academic Growth/Math/MGP'                    : '56',
+        'Academic Growth/Reading'                     : '14',
+        'Academic Growth/Reading/Count'               : '259',
+        'Academic Growth/Reading/MGP'                 : '48',
 
-        'Academic Achievement/Math'             : '5',
-        'Academic Achievement/Math/Catch Up'    : '3',
-        'Academic Achievement/Math/Keep Up'     : '2',
-        'Academic Achievement/Math/Move Up'     : '-',
+        'Academic Achievement/Math'                   : '5',
+        'Academic Achievement/Math/Count'             : '401',
 
-        'Academic Achievement/Reading'          : '2.5',
-        'Academic Achievement/Reading/Catch Up' : '0',
-        'Academic Achievement/Reading/Keep Up'  : '0.4',
-        'Academic Achievement/Reading/Move Up'  : '-',
+        'Academic Achievement/Math/Catch Up'          : '3',
+        'Academic Achievement/Math/Catch Up/Count'    : '84',
+
+        'Academic Achievement/Math/Keep Up'           : '2',
+        'Academic Achievement/Math/Keep Up/Count'     : '174',
+
+        'Academic Achievement/Reading'                : '2.5',
+        'Academic Achievement/Reading/Count'          : '402',
+
+        'Academic Achievement/Reading/Catch Up'       : '0',
+        'Academic Achievement/Reading/Catch Up/Count' : '83',
+
+        'Academic Achievement/Reading/Keep Up'        : '0.4',
+        'Academic Achievement/Reading/Keep Up/Count'  : '176',
 
         # p3
         'Growth Gaps/Math/FRLE'          : '3',

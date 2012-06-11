@@ -108,22 +108,39 @@ def extract_from_pdf(fname, school_type):
 
         ###########################################################################
         p2_categories = {
-            "Academic Growth/Math"                  : "221.640,495.359,233.885,505.672",
-            "Academic Growth/Math/Count"            : "419.280,495.359,437.648,506.152",
-            "Academic Growth/Math/MGP"              : "518.880,495.359,531.125,506.152",
-            "Academic Growth/Reading"               : "221.640,465.359,233.885,475.672",
-            "Academic Growth/Reading/Count"         : "419.880,465.359,438.248,476.152",
-            "Academic Growth/Reading/MGP"           : "518.160,465.359,530.405,476.152",
+            # ===========================================================================
+            # Academic Growth/Math
+            # ===========================================================================
+            "Academic Growth/Math"       : "221.640,495.359,233.885,505.672",
+            "Academic Growth/Math/Count" : "419.280,495.359,437.648,506.152",
+            "Academic Growth/Math/MGP"   : "518.880,495.359,531.125,506.152",
 
-            "Academic Achievement/Math"             : "224.640,375.359,230.763,385.672",
-            "Academic Achievement/Math/Catch Up"    : "224.640,345.359,230.763,355.672",
-            "Academic Achievement/Math/Keep Up"     : "224.640,315.359,230.763,325.672",
-            "Academic Achievement/Math/Move Up"     : "225.840,285.239,229.562,296.032",
+            # ===========================================================================
+            # Academic Growth/Reading
+            # ===========================================================================
+            "Academic Growth/Reading"       : "221.640,465.359,233.885,475.672",
+            "Academic Growth/Reading/Count" : "419.880,465.359,438.248,476.152",
+            "Academic Growth/Reading/MGP"   : "518.160,465.359,530.405,476.152",
 
-            "Academic Achievement/Reading"          : "219.960,255.239,235.445,265.552",
-            "Academic Achievement/Reading/Catch Up" : "224.640,225.239,230.763,235.552",
-            "Academic Achievement/Reading/Keep Up"  : "219.960,195.239,235.445,205.552",
-            "Academic Achievement/Reading/Move Up"  : "225.840,165.239,229.562,176.032",
+            # ===========================================================================
+            # Academic Achievement/Math
+            # ===========================================================================
+            "Academic Achievement/Math"                : "224.640,375.359,230.763,385.672",
+            "Academic Achievement/Math/Count"          : "419.880,375.359,438.248,386.152",
+            "Academic Achievement/Math/Catch Up"       : "224.640,345.359,230.763,355.672",
+            "Academic Achievement/Math/Catch Up/Count" : "422.880,345.359,435.125,356.152",
+            "Academic Achievement/Math/Keep Up"        : "224.640,315.359,230.763,325.672",
+            "Academic Achievement/Math/Keep Up/Count"  : "419.880,315.359,438.248,326.152",
+
+            # ===========================================================================
+            # Academic Achievement/Reading
+            # ===========================================================================
+            "Academic Achievement/Reading"                : "219.960,255.239,235.445,265.552",
+            "Academic Achievement/Reading/Count"          : "419.280,255.239,437.648,266.032",
+            "Academic Achievement/Reading/Catch Up"       : "224.640,225.239,230.763,235.552",
+            "Academic Achievement/Reading/Catch Up/Count" : "422.880,225.239,435.125,236.032",
+            "Academic Achievement/Reading/Keep Up"        : "219.960,195.239,235.445,205.552",
+            "Academic Achievement/Reading/Keep Up/Count"  : "419.880,195.239,438.248,206.032",
         }
 
         textboxes = doc.xpath("//page[@id='2']//textbox")

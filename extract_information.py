@@ -22,6 +22,13 @@ from lxml import etree
 
 DIGITS_ONLY = {'Academic Achievement', 'Other Indicators'}
 
+# Cache lookup so the '|' joined fuzzy ranges don't have to be
+# completely regenerated each time.
+#
+# Without this, takes 2 and a half minutes to parse all elementary
+# school XML files. With this, down to 30 seconds.
+COMMON_RANGES = {}
+
 def create_boundaries(coord, default_size=10):
     """
     Generate a coordinate matching regexp that can do "fuzzy matching."
@@ -58,7 +65,12 @@ def create_boundaries(coord, default_size=10):
     for arg, size in args:
         size = int(size) if size else default_size
         arg = int(arg)
-        s.append('(' + '|'.join("%d\.\d{3}" % elem for elem in xrange(arg - size, arg + size + 1)) + ')')
+        if (arg, size) in COMMON_RANGES:
+            result = COMMON_RANGES[(arg, size)]
+        else:
+            result = '(' + '|'.join("%d\.\d{3}" % elem for elem in xrange(arg - size, arg + size + 1)) + ')'
+            COMMON_RANGES[(arg, size)] = result
+        s.append(result)
     return re.compile(','.join(s))
 
 def extract_text(textbox, category):

@@ -24,6 +24,7 @@ ELEMENTARY_SCHOOL_POINTS = {
 
         'Academic Achievement/Math'                   : '5',
         'Academic Achievement/Math/Count'             : '401',
+        'Academic Achievement/Math/Pct. Proficient'   : '71.82%',
 
         'Academic Achievement/Math/Catch Up'          : '3',
         'Academic Achievement/Math/Catch Up/Count'    : '84',

@@ -125,12 +125,13 @@ def extract_from_pdf(fname, school_type):
             # ===========================================================================
             # Academic Achievement/Math
             # ===========================================================================
-            "Academic Achievement/Math"                : "224.640,375.359,230.763,385.672",
-            "Academic Achievement/Math/Count"          : "419.880,375.359,438.248,386.152",
-            "Academic Achievement/Math/Catch Up"       : "224.640,345.359,230.763,355.672",
-            "Academic Achievement/Math/Catch Up/Count" : "422.880,345.359,435.125,356.152",
-            "Academic Achievement/Math/Keep Up"        : "224.640,315.359,230.763,325.672",
-            "Academic Achievement/Math/Keep Up/Count"  : "419.880,315.359,438.248,326.152",
+            "Academic Achievement/Math"                 : "224.640,375.359,230.763,385.672",
+            "Academic Achievement/Math/Count"           : "419.880,375.359,438.248,386.152",
+            "Academic Achievement/Math/Pct. Proficient" : "513.840,375.359,549.842,386.152",
+            "Academic Achievement/Math/Catch Up"        : "224.640,345.359,230.763,355.672",
+            "Academic Achievement/Math/Catch Up/Count"  : "422.880,345.359,435.125,356.152",
+            "Academic Achievement/Math/Keep Up"         : "224.640,315.359,230.763,325.672",
+            "Academic Achievement/Math/Keep Up/Count"   : "419.880,315.359,438.248,326.152",
 
             # ===========================================================================
             # Academic Achievement/Reading

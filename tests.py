@@ -28,9 +28,11 @@ ELEMENTARY_SCHOOL_POINTS = {
 
         'Academic Achievement/Math/Catch Up'          : '3',
         'Academic Achievement/Math/Catch Up/Count'    : '84',
+        'Academic Achievement/Math/Catch Up/Percent'  : '41.67%',
 
         'Academic Achievement/Math/Keep Up'           : '2',
         'Academic Achievement/Math/Keep Up/Count'     : '174',
+        'Academic Achievement/Math/Keep Up/Percent'   : '67.24%',
 
         'Academic Achievement/Reading'                : '2.5',
         'Academic Achievement/Reading/Count'          : '402',

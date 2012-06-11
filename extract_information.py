@@ -107,12 +107,13 @@ def extract_from_pdf(fname, school_type):
                     ret[category] = extract_text(textbox, category)
 
         ###########################################################################
-        # luckily, page 2 values *are* identical throughout
         p2_categories = {
             "Academic Growth/Math"                  : "221.640,495.359,233.885,505.672",
             "Academic Growth/Math/Count"            : "419.280,495.359,437.648,506.152",
+            "Academic Growth/Math/MGP"              : "518.880,495.359,531.125,506.152",
             "Academic Growth/Reading"               : "221.640,465.359,233.885,475.672",
             "Academic Growth/Reading/Count"         : "419.880,465.359,438.248,476.152",
+            "Academic Growth/Reading/MGP"           : "518.160,465.359,530.405,476.152",
 
             "Academic Achievement/Math"             : "224.640,375.359,230.763,385.672",
             "Academic Achievement/Math/Catch Up"    : "224.640,345.359,230.763,355.672",

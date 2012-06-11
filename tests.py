@@ -17,8 +17,10 @@ ELEMENTARY_SCHOOL_POINTS = {
         # p2
         'Academic Growth/Math'                  : '17',
         'Academic Growth/Math/Count'            : '258',
+        'Academic Growth/Math/MGP'              : '56',
         'Academic Growth/Reading'               : '14',
         'Academic Growth/Reading/Count'         : '259',
+        'Academic Growth/Reading/MGP'           : '48',
 
         'Academic Achievement/Math'             : '5',
         'Academic Achievement/Math/Catch Up'    : '3',

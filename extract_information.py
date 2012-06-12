@@ -106,6 +106,11 @@ def extract_from_pdf(fname, school_type):
                 if match and category not in ret:
                     ret[category] = extract_text(textbox, category)
 
+        # Fill in any missing values
+        missing_keys = set(p1_categories.keys()) - set(ret.keys())
+        for missing_key in missing_keys:
+            ret[missing_key] = '*** Missing value ***'
+
         ###########################################################################
         p2_categories = {
             # ===========================================================================
@@ -155,6 +160,11 @@ def extract_from_pdf(fname, school_type):
                 if match and category not in ret:
                     ret[category] = extract_text(textbox, category)
 
+        # Fill in any missing values
+        missing_keys = set(p2_categories.keys()) - set(ret.keys())
+        for missing_key in missing_keys:
+            ret[missing_key] = '*** Missing value ***'
+
         ###########################################################################
         p3_categories = {
             "Growth Gaps/Math/FRLE"                 : "234.360,519.725,238.916,527.874",
@@ -183,6 +193,11 @@ def extract_from_pdf(fname, school_type):
                 if match and category not in ret:
                     ret[category] = extract_text(textbox, category)
 
+        # Fill in any missing values
+        missing_keys = set(p3_categories.keys()) - set(ret.keys())
+        for missing_key in missing_keys:
+            ret[missing_key] = '*** Missing value ***'
+
     return ret
 
 def main():
@@ -193,14 +208,12 @@ def main():
     parser.add_argument("-t", "--school-type")
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
-    number_keys = 35
 
     output = tablib.Dataset()
 
     for fname in args.input:
         print "Parsing '%s'..." % fname
         info = extract_from_pdf(fname, args.school_type)
-        assert len(info.keys()) == number_keys, len(info.keys())
         values = []
 
         if not output.headers:

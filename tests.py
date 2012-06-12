@@ -51,28 +51,34 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Academic Achievement/Reading/Keep Up/Reduction'  : '0',
 
         # p3
+        'Growth Gaps/Eligible': '22',
+
         # ===========================================================================
         # Growth Gaps/Reading
         # ===========================================================================
         'Growth Gaps/Math/FRLE'               : '3',
+          'Growth Gaps/Math/FRLE/Eligible'    : '3',
           'Growth Gaps/Math/FRLE/Count'       : '126',
           'Growth Gaps/Math/FRLE/MGP'         : '52',
           'Growth Gaps/Math/FRLE/MAGP'        : '51',
           'Growth Gaps/Math/FRLE/MAG'         : 'Yes',
 
         'Growth Gaps/Math/Minority'           : '3',
+          'Growth Gaps/Math/Minority/Eligible': '3',
           'Growth Gaps/Math/Minority/Count'   : '162',
           'Growth Gaps/Math/Minority/MGP'     : '56',
           'Growth Gaps/Math/Minority/MAGP'    : '48',
           'Growth Gaps/Math/Minority/MAG'     : 'Yes',
 
         'Growth Gaps/Math/Disability'         : '0',
+          'Growth Gaps/Math/Disability/Eligible': '2',
           'Growth Gaps/Math/Disability/Count' : '27',
           'Growth Gaps/Math/Disability/MGP'   : '33',
           'Growth Gaps/Math/Disability/MAGP'  : '55',
           'Growth Gaps/Math/Disability/MAG'   : 'No',
 
         'Growth Gaps/Math/LEP'                : '3',
+          'Growth Gaps/Math/LEP/Eligible'     : '3',
           'Growth Gaps/Math/LEP/Count'        : '39',
           'Growth Gaps/Math/LEP/MGP'          : '61',
           'Growth Gaps/Math/LEP/MAGP'         : '52',
@@ -82,24 +88,28 @@ ELEMENTARY_SCHOOL_POINTS = {
         # Growth Gaps/Reading
         # ===========================================================================
         'Growth Gaps/Reading/FRLE': '0',
+          'Growth Gaps/Reading/FRLE/Eligible': '3',
           'Growth Gaps/Reading/FRLE/Count': '126',
           'Growth Gaps/Reading/FRLE/MGP': '41',
           'Growth Gaps/Reading/FRLE/MAGP': '53',
           'Growth Gaps/Reading/FRLE/MAG': 'No',
 
         'Growth Gaps/Reading/Minority': '0',
+          'Growth Gaps/Reading/Minority/Eligible': '3',
           'Growth Gaps/Reading/Minority/Count': '162',
           'Growth Gaps/Reading/Minority/MGP': '45',
           'Growth Gaps/Reading/Minority/MAGP': '50',
           'Growth Gaps/Reading/Minority/MAG': 'No',
 
         'Growth Gaps/Reading/Disability': '0',
+          'Growth Gaps/Reading/Disability/Eligible': '2',
           'Growth Gaps/Reading/Disability/Count': '27',
           'Growth Gaps/Reading/Disability/MGP': '38',
           'Growth Gaps/Reading/Disability/MAGP': '80',
           'Growth Gaps/Reading/Disability/MAG': 'No',
 
         'Growth Gaps/Reading/LEP': '0',
+          'Growth Gaps/Reading/LEP/Eligible': '3',
           'Growth Gaps/Reading/LEP/Count': '40',
           'Growth Gaps/Reading/LEP/MGP': '44',
           'Growth Gaps/Reading/LEP/MAGP': '59',
@@ -118,6 +128,13 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Total Score'          : '70.7',
         'AYP'                  : 'AYP',
         'Academic Growth/Math' : '10',
+
+        'Growth Gaps/Math/Disability/Eligible': '0',
+        'Growth Gaps/Math/LEP/Eligible': '0',
+        'Growth Gaps/Reading/Disability/Eligible': '0',
+        'Growth Gaps/Reading/LEP/Eligible': '0',
+
+        'Growth Gaps/Eligible': '12',
     },
 
     'xml/ES/203-Tarr, Sheila R ES.xml': {

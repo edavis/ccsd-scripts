@@ -83,7 +83,7 @@ def extract_from_pdf(fname, school_type):
     Return a dictionary of {category: value} for a given school XML file.
     """
     doc = etree.parse(fname)
-    ret = {'School': re.search('\d\d\d-([^.]+)\.xml$', fname).group(1)}
+    ret = {'School': re.search('\d\d\d-(.+)\.xml$', fname).group(1)}
 
     if school_type == 'ES':
         p1_categories = {

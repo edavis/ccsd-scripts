@@ -46,10 +46,29 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Academic Achievement/Reading/Keep Up/Count'  : '176',
 
         # p3
-        'Growth Gaps/Math/FRLE'          : '3',
-        'Growth Gaps/Math/Minority'      : '3',
-        'Growth Gaps/Math/Disability'    : '0',
-        'Growth Gaps/Math/LEP'           : '3',
+        'Growth Gaps/Math/FRLE'               : '3',
+          'Growth Gaps/Math/FRLE/Count'       : '126',
+          'Growth Gaps/Math/FRLE/MGP'         : '52',
+          'Growth Gaps/Math/FRLE/MAGP'        : '51',
+          'Growth Gaps/Math/FRLE/MAG'         : 'Yes',
+
+        'Growth Gaps/Math/Minority'           : '3',
+          'Growth Gaps/Math/Minority/Count'   : '162',
+          'Growth Gaps/Math/Minority/MGP'     : '56',
+          'Growth Gaps/Math/Minority/MAGP'    : '48',
+          'Growth Gaps/Math/Minority/MAG'     : 'Yes',
+
+        'Growth Gaps/Math/Disability'         : '0',
+          'Growth Gaps/Math/Disability/Count' : '27',
+          'Growth Gaps/Math/Disability/MGP'   : '33',
+          'Growth Gaps/Math/Disability/MAGP'  : '55',
+          'Growth Gaps/Math/Disability/MAG'   : 'No',
+
+        'Growth Gaps/Math/LEP'                : '3',
+          'Growth Gaps/Math/LEP/Count'        : '39',
+          'Growth Gaps/Math/LEP/MGP'          : '61',
+          'Growth Gaps/Math/LEP/MAGP'         : '52',
+          'Growth Gaps/Math/LEP/MAG'          : 'Yes',
 
         'Growth Gaps/Reading/FRLE'       : '0',
         'Growth Gaps/Reading/Minority'   : '0',

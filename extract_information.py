@@ -169,10 +169,29 @@ def extract_from_pdf(fname, school_type):
 
         ###########################################################################
         p3_categories = {
-            "Growth Gaps/Math/FRLE"                 : "234.360,519.725,238.916,527.874",
-            "Growth Gaps/Math/Minority"             : "234.360,498.725,238.916,506.874",
-            "Growth Gaps/Math/Disability"           : "234.360,477.725,238.916,485.874",
-            "Growth Gaps/Math/LEP"                  : "234.360,456.485,238.916,464.634",
+            "Growth Gaps/Math/FRLE"               : "234.360,519.725,238.916,527.874",
+              "Growth Gaps/Math/FRLE/Count"       : "421.560,519.725,435.229,527.874",
+              "Growth Gaps/Math/FRLE/MGP"         : "513.720,519.725,522.833,527.874",
+              "Growth Gaps/Math/FRLE/MAGP"        : "618.600,519.725,627.713,527.874",
+              "Growth Gaps/Math/FRLE/MAG"         : "712.560,519.725,725.402,527.874",
+
+            "Growth Gaps/Math/Minority"           : "234.360,498.725,238.916,506.874",
+              "Growth Gaps/Math/Minority/Count"   : "421.560,498.725,435.229,506.874",
+              "Growth Gaps/Math/Minority/MGP"     : "513.720,498.725,522.833,506.874",
+              "Growth Gaps/Math/Minority/MAGP"    : "618.600,498.725,627.713,506.874",
+              "Growth Gaps/Math/Minority/MAG"     : "712.560,498.725,725.402,506.874",
+
+            "Growth Gaps/Math/Disability"         : "234.360,477.725,238.916,485.874",
+              "Growth Gaps/Math/Disability/Count" : "423.840,477.725,432.953,485.874",
+              "Growth Gaps/Math/Disability/MGP"   : "513.720,477.725,522.833,485.874",
+              "Growth Gaps/Math/Disability/MAGP"  : "618.600,477.725,627.713,485.874",
+              "Growth Gaps/Math/Disability/MAG"   : "713.640,477.725,724.320,485.874",
+
+            "Growth Gaps/Math/LEP"                : "234.360,456.485,238.916,464.634",
+              "Growth Gaps/Math/LEP/Count"        : "423.840,456.485,432.953,464.634",
+              "Growth Gaps/Math/LEP/MGP"          : "513.720,456.485,522.833,464.634",
+              "Growth Gaps/Math/LEP/MAGP"         : "618.600,456.485,627.713,464.634",
+              "Growth Gaps/Math/LEP/MAG"          : "712.560,456.485,725.402,464.634",
 
             "Growth Gaps/Reading/FRLE"              : "234.360,399.725,238.916,407.874",
             "Growth Gaps/Reading/Minority"          : "234.360,399.725,238.916,407.874",

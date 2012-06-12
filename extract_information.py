@@ -147,12 +147,19 @@ def extract_from_pdf(fname, school_type):
             # ===========================================================================
             # Academic Achievement/Reading
             # ===========================================================================
-            "Academic Achievement/Reading"                : "219.960,255.239,235.445,265.552",
-            "Academic Achievement/Reading/Count"          : "419.280,255.239,437.648,266.032",
-            "Academic Achievement/Reading/Catch Up"       : "224.640,225.239,230.763,235.552",
-            "Academic Achievement/Reading/Catch Up/Count" : "422.880,225.239,435.125,236.032",
-            "Academic Achievement/Reading/Keep Up"        : "219.960,195.239,235.445,205.552",
-            "Academic Achievement/Reading/Keep Up/Count"  : "419.880,195.239,438.248,206.032",
+            "Academic Achievement/Reading"                    : "219.960,255.239,235.445,265.552",
+            "Academic Achievement/Reading/Count"              : "419.280,255.239,437.648,266.032",
+            "Academic Achievement/Reading/Pct. Proficient"    : "512.280,255.239,548.283,266.032",
+
+            "Academic Achievement/Reading/Catch Up"           : "224.640,225.239,230.763,235.552",
+            "Academic Achievement/Reading/Catch Up/Count"     : "422.880,225.239,435.125,236.032",
+            "Academic Achievement/Reading/Catch Up/Percent"   : "605.160,225.239,641.162,236.032",
+            "Academic Achievement/Reading/Catch Up/Reduction" : "712.920:15,225.239,719.042:15,236.032",
+
+            "Academic Achievement/Reading/Keep Up"            : "219.960,195.239,235.445,205.552",
+            "Academic Achievement/Reading/Keep Up/Count"      : "419.880,195.239,438.248,206.032",
+            "Academic Achievement/Reading/Keep Up/Percent"    : "605.160,195.239,641.162,206.032",
+            "Academic Achievement/Reading/Keep Up/Reduction"  : "712.920:15,195.239,719.042:15,206.032",
         }
 
         textboxes = doc.xpath("//page[@id='2']//textbox")

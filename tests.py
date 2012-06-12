@@ -51,6 +51,9 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Academic Achievement/Reading/Keep Up/Reduction'  : '0',
 
         # p3
+        # ===========================================================================
+        # Growth Gaps/Reading
+        # ===========================================================================
         'Growth Gaps/Math/FRLE'               : '3',
           'Growth Gaps/Math/FRLE/Count'       : '126',
           'Growth Gaps/Math/FRLE/MGP'         : '52',
@@ -75,10 +78,32 @@ ELEMENTARY_SCHOOL_POINTS = {
           'Growth Gaps/Math/LEP/MAGP'         : '52',
           'Growth Gaps/Math/LEP/MAG'          : 'Yes',
 
-        'Growth Gaps/Reading/FRLE'       : '0',
-        'Growth Gaps/Reading/Minority'   : '0',
-        'Growth Gaps/Reading/Disability' : '0',
-        'Growth Gaps/Reading/LEP'        : '0',
+        # ===========================================================================
+        # Growth Gaps/Reading
+        # ===========================================================================
+        'Growth Gaps/Reading/FRLE': '0',
+          'Growth Gaps/Reading/FRLE/Count': '126',
+          'Growth Gaps/Reading/FRLE/MGP': '41',
+          'Growth Gaps/Reading/FRLE/MAGP': '53',
+          'Growth Gaps/Reading/FRLE/MAG': 'No',
+
+        'Growth Gaps/Reading/Minority': '0',
+          'Growth Gaps/Reading/Minority/Count': '162',
+          'Growth Gaps/Reading/Minority/MGP': '45',
+          'Growth Gaps/Reading/Minority/MAGP': '50',
+          'Growth Gaps/Reading/Minority/MAG': 'No',
+
+        'Growth Gaps/Reading/Disability': '0',
+          'Growth Gaps/Reading/Disability/Count': '27',
+          'Growth Gaps/Reading/Disability/MGP': '38',
+          'Growth Gaps/Reading/Disability/MAGP': '80',
+          'Growth Gaps/Reading/Disability/MAG': 'No',
+
+        'Growth Gaps/Reading/LEP': '0',
+          'Growth Gaps/Reading/LEP/Count': '40',
+          'Growth Gaps/Reading/LEP/MGP': '44',
+          'Growth Gaps/Reading/LEP/MAGP': '59',
+          'Growth Gaps/Reading/LEP/MAG': 'No',
 
         'Other Factors/Avg. Daily Attendance'   : '2',
         'Other Factors/LEP (>24pt gain)'        : '1',

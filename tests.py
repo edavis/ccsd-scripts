@@ -223,9 +223,9 @@ ELEMENTARY_SCHOOL_POINTS = {
     },
 }
 
-def check_elementary_school_values(fname):
+def check_school_values(fname, school_type):
     correct_values = ELEMENTARY_SCHOOL_POINTS.get(fname)
-    info = extract_from_pdf(fname, 'ES')
+    info = extract_from_pdf(fname, school_type)
 
     for key in correct_values.iterkeys():
         assert_string = "got: %r, correct: %r for key: %r" % (info[key], correct_values[key], key)
@@ -233,7 +233,11 @@ def check_elementary_school_values(fname):
 
 def test_elementary_school():
     for fname in ELEMENTARY_SCHOOL_POINTS.iterkeys():
-        yield check_elementary_school_values, fname
+        yield check_school_values, fname, 'ES'
+
+def test_middle_school():
+    for fname in MIDDLE_SCHOOL_POINTS.iterkeys():
+        yield check_school_values, fname, 'MS'
 
 def test_middle_school():
     pass

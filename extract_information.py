@@ -22,12 +22,8 @@ from lxml import etree
 
 DIGITS_ONLY = {'Academic Achievement', 'Other Indicators'}
 
-# Cache lookup so the '|' joined fuzzy ranges don't have to be
-# completely regenerated each time.
-#
-# Without this, takes 2 and a half minutes to parse all elementary
-# school XML files. With this, down to 30 seconds.
-COMMON_RANGES = {}
+# Cache the compiled regexes under the `coord` key
+COMMON_BOUNDS = {}
 
 def create_boundaries(coord, default_size=10):
     """
@@ -60,18 +56,19 @@ def create_boundaries(coord, default_size=10):
     '663.000:10' will range between 653 and 673. When ':N' is omitted,
     the digit uses the default_size.
     """
-    s = []
-    args = re.findall('(\d+)[.]\d{3}:?(\d*)', coord)
-    for arg, size in args:
-        size = int(size) if size else default_size
-        arg = int(arg)
-        if (arg, size) in COMMON_RANGES:
-            result = COMMON_RANGES[(arg, size)]
-        else:
+    if coord in COMMON_BOUNDS:
+        result = COMMON_BOUNDS[coord]
+    else:
+        s = []
+        args = re.findall('(\d+)[.]\d{3}:?(\d*)', coord)
+        for arg, size in args:
+            size = int(size) if size else default_size
+            arg = int(arg)
             result = '(' + '|'.join("%d\.\d{3}" % elem for elem in xrange(arg - size, arg + size + 1)) + ')'
-            COMMON_RANGES[(arg, size)] = result
-        s.append(result)
-    return re.compile(','.join(s))
+            s.append(result)
+        result = re.compile(','.join(s))
+        COMMON_BOUNDS[coord] = result
+    return result
 
 def extract_text(textbox, category):
     """

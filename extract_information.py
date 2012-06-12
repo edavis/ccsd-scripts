@@ -237,13 +237,48 @@ def extract_from_pdf(fname, school_type):
               "Growth Gaps/Reading/LEP/MAGP": "618.600,357.365,627.713,365.514",
               "Growth Gaps/Reading/LEP/MAG": "713.640,357.365,724.320,365.514",
 
+            # ===========================================================================
+            # Other Factors
+            # ===========================================================================
             "Other Factors/Avg. Daily Attendance": "234.360,285.605,238.916,293.754",
-            "Other Factors/LEP (>24pt gain)": "231.240,267.605,242.162,275.754",
-            "Other Factors/LEP (Attain lvl 5)": "231.240,249.485,242.162,257.634",
+              "Other Factors/Avg. Daily Attendance/Eligible": "321.240,285.605,325.796,293.754",
+              "Other Factors/Avg. Daily Attendance/Rate 2010-2011": "506.280,285.605,533.266,293.754",
+
+            "Other Factors/LEP/Count": "426.840,258.605,435.953,266.754",
+
+              "Other Factors/LEP (>24pt gain)": "231.240,267.605,242.162,275.754",
+                "Other Factors/LEP (>24pt gain)/Eligible": "321.240,267.605,325.796,275.754",
+                "Other Factors/LEP (>24pt gain)/Rate 2010-2011": "507.840:12,267.605,534.706:12,275.754",
+                "Other Factors/LEP (>24pt gain)/Rate 2009-2010": "610.200:12,267.605,637.186:12,275.754",
+
+              "Other Factors/LEP (Attain lvl 5)": "231.240,249.485,242.162,257.634",
+                "Other Factors/LEP (Attain lvl 5)/Eligible": "321.240,249.485,325.796,257.634",
+                "Other Factors/LEP (Attain lvl 5)/Rate 2010-2011": "507.840:12,249.485,534.706:12,257.634",
+                "Other Factors/LEP (Attain lvl 5)/Rate 2009-2010": "610.200:12,249.485,637.186:12,257.634",
+
             "Other Factors/IEP": "234.360,219.605,238.916,227.754",
+              "Other Factors/IEP/Eligible": "321.240,219.605,325.796,227.754",
+              "Other Factors/IEP/Count": "426.840,219.605,435.953,227.754",
+
+              "Other Factors/IEP (>=80%)/Rate 2010-2011": "507.840:12,228.605,534.706:12,236.754",
+              "Other Factors/IEP (>=80%)/Rate 2009-2010": "610.200:12,228.605,637.186:12,236.754",
+
+              "Other Factors/IEP (Gen Ed)/Rate 2010-2011": "507.840:12,210.485,534.706:12,218.634",
+              "Other Factors/IEP (Gen Ed)/Rate 2009-2010": "610.186:12,210.485,637.172:12,218.634",
+
             "Other Factors/6th Grade": "234.360,189.605,238.916,197.754",
+              "Other Factors/6th Grade/Eligible": "321.240,189.605,325.796,197.754",
+              "Other Factors/6th Grade/Count": "424.560,189.605,438.229,197.754",
+              "Other Factors/6th Grade/Rate 2010-2011": "507.830:12,189.605,534.697:12,197.754",
+              "Other Factors/6th Grade/Rate 2009-2010": "610.200:12,189.605,637.186:12,197.754",
+
             "Other Factors/Student Survey Positive": "234.360,171.605,238.916,179.754",
+              "Other Factors/Student Survey Positive/Eligible": "321.240,171.605,325.796,179.754",
+              "Other Factors/Student Survey Positive/Count": "426.840,171.605,435.953,179.754",
+              "Other Factors/Student Survey Positive/Rate 2010-2011": "507.840:12,171.605,534.706:12,179.754",
+
             "Other Factors/Parent Engagement Plan": "234.360,153.605,238.916,161.754",
+              "Other Factors/Parent Engagement Plan/Eligible": "321.240,153.605,325.796,161.754",
         }
 
         textboxes = doc.xpath("//page[@id='3']//textbox")

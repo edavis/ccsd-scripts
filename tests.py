@@ -115,13 +115,48 @@ ELEMENTARY_SCHOOL_POINTS = {
           'Growth Gaps/Reading/LEP/MAGP': '59',
           'Growth Gaps/Reading/LEP/MAG': 'No',
 
-        'Other Factors/Avg. Daily Attendance'   : '2',
-        'Other Factors/LEP (>24pt gain)'        : '1',
-        'Other Factors/LEP (Attain lvl 5)'      : '1',
-        'Other Factors/IEP'                     : '2',
-        'Other Factors/6th Grade'               : '0',
-        'Other Factors/Student Survey Positive' : '1',
-        'Other Factors/Parent Engagement Plan'  : '3',
+        # ===========================================================================
+        # Other Factors
+        # ===========================================================================
+        'Other Factors/Avg. Daily Attendance': '2',
+          'Other Factors/Avg. Daily Attendance/Eligible': '2',
+          'Other Factors/Avg. Daily Attendance/Rate 2010-2011': '95.90%',
+
+        'Other Factors/LEP/Count': '52',
+
+        'Other Factors/LEP (>24pt gain)': '1',
+          'Other Factors/LEP (>24pt gain)/Eligible': '1',
+          "Other Factors/LEP (>24pt gain)/Rate 2010-2011": "71.15%",
+          "Other Factors/LEP (>24pt gain)/Rate 2009-2010": "81.16%",
+
+        'Other Factors/LEP (Attain lvl 5)': '1',
+          'Other Factors/LEP (Attain lvl 5)/Eligible': '1',
+          "Other Factors/LEP (Attain lvl 5)/Rate 2010-2011": "25.00%",
+          "Other Factors/LEP (Attain lvl 5)/Rate 2009-2010": "23.19%",
+
+        'Other Factors/IEP': '2',
+          'Other Factors/IEP/Eligible': '2',
+          'Other Factors/IEP/Count': '87',
+
+          "Other Factors/IEP (>=80%)/Rate 2010-2011": "52.87%",
+          "Other Factors/IEP (>=80%)/Rate 2009-2010": "62.03%",
+
+          "Other Factors/IEP (Gen Ed)/Rate 2010-2011": "67.86%",
+          "Other Factors/IEP (Gen Ed)/Rate 2009-2010": "66.72%",
+
+        'Other Factors/6th Grade': '0',
+          'Other Factors/6th Grade/Eligible': '2',
+          'Other Factors/6th Grade/Count': '145',
+          'Other Factors/6th Grade/Rate 2010-2011': '33.10%',
+          'Other Factors/6th Grade/Rate 2009-2010': '35.33%',
+
+        'Other Factors/Student Survey Positive': '1',
+          'Other Factors/Student Survey Positive/Eligible': '1',
+          'Other Factors/Student Survey Positive/Count': '36',
+          'Other Factors/Student Survey Positive/Rate 2010-2011': '96.03%',
+
+        'Other Factors/Parent Engagement Plan': '3',
+          'Other Factors/Parent Engagement Plan/Eligible': '3',
     },
 
     'xml/ES/202-Wolff, Elise L ES.xml': {

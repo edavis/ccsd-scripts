@@ -77,12 +77,19 @@ ELEMENTARY_SCHOOL_POINTS = {
         'Academic Growth Gaps' : '12',
     },
 
+    'xml/ES/204-Staton, Ethel W ES.xml': {
+        'Academic Achievement/Math/Catch Up/Reduction': '0',
+    },
+
     'xml/ES/205-Snyder, William E ES.xml': {
         'Other Indicators'     : '10.5',
         'Total Score'          : '88.51',
     },
 
     'xml/ES/209-Bonner, John W ES.xml': {
+        'Academic Achievement/Reading/Catch Up/Reduction' : '22.65%',
+        'Academic Achievement/Reading/Keep Up/Reduction'  : '45.45%',
+
         'Growth Gaps/Math/FRLE'          : '3',
         'Growth Gaps/Math/Minority'      : '3',
         'Growth Gaps/Math/Disability'    : 'NA',

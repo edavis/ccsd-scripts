@@ -19,6 +19,7 @@ It ain't pretty, but it works.
 import re
 import tablib
 from lxml import etree
+from ConfigParser import SafeConfigParser
 
 DIGITS_ONLY = {'Academic Achievement', 'Other Indicators'}
 
@@ -78,220 +79,37 @@ def extract_text(textbox, category):
     s = ''.join(text).strip()
     return re.sub('[^\d.]+', '', s) if category in DIGITS_ONLY else s
 
-def extract_from_pdf(fname, school_type):
+def process_page(page):
+    ret = {}
+    keys_seen = set()
+    for textbox in page['page']:
+        for category, location in page['config']:
+            keys_seen.add(category)
+            match = create_boundaries(location).search(textbox.attrib['bbox'])
+            if match and category not in ret:
+                ret[category] = extract_text(textbox, category)
+
+    missing_keys = keys_seen - set(ret.keys())
+    for missing_key in missing_keys:
+        ret[missing_key] = '*** Missing value ***'
+
+    return ret
+
+def extract_from_pdf(fname, config):
     """
     Return a dictionary of {category: value} for a given school XML file.
     """
     doc = etree.parse(fname)
     ret = {'School': re.search('\d\d\d-(.+)\.xml$', fname).group(1)}
 
-    if school_type == 'ES':
-        p1_categories = {
-            "Academic Growth": "476.280,510.359,488.405,520.672",
-            "Academic Achievement": "476.040,480.359,488.285:50,490.672",
-            "Academic Growth Gaps": "479.280,450.359,485.402,460.672",
-            "Other Indicators": "476.280,420.359,488.405:50,430.672",
-            "AYP": "669.000,388.565, 682.196,398.150",
-            "Focus Goal": "639.960,355.565,714.096,365.150",
-            "Total Score": "663.000:20,313.440,699.454,323.989",
-        }
+    pages = [
+        dict(config=config.items('p1'), page=doc.xpath("//page[@id='1']//textbox")),
+        dict(config=config.items('p2'), page=doc.xpath("//page[@id='2']//textbox")),
+        dict(config=config.items('p3'), page=doc.xpath("//page[@id='3']//textbox")),
+    ]
 
-        textboxes = doc.xpath("//page[@id='1']//textbox")
-        for textbox in textboxes:
-            for category, location in p1_categories.iteritems():
-                match = create_boundaries(location).search(textbox.attrib['bbox'])
-                if match and category not in ret:
-                    ret[category] = extract_text(textbox, category)
-
-        # Fill in any missing values
-        missing_keys = set(p1_categories.keys()) - set(ret.keys())
-        for missing_key in missing_keys:
-            ret[missing_key] = '*** Missing value ***'
-
-        ###########################################################################
-        p2_categories = {
-            # ===========================================================================
-            # Academic Growth/Math
-            # ===========================================================================
-            "Academic Growth/Math": "221.640,495.359,233.885,505.672",
-            "Academic Growth/Math/Count": "419.280,495.359,437.648,506.152",
-            "Academic Growth/Math/MGP": "518.880,495.359,531.125,506.152",
-
-            # ===========================================================================
-            # Academic Growth/Reading
-            # ===========================================================================
-            "Academic Growth/Reading": "221.640,465.359,233.885,475.672",
-            "Academic Growth/Reading/Count": "419.880,465.359,438.248,476.152",
-            "Academic Growth/Reading/MGP": "518.160,465.359,530.405,476.152",
-
-            # ===========================================================================
-            # Academic Achievement/Math
-            # ===========================================================================
-            "Academic Achievement/Math": "224.640,375.359,230.763,385.672",
-            "Academic Achievement/Math/Count": "419.880,375.359,438.248,386.152",
-            "Academic Achievement/Math/Pct. Proficient": "513.840,375.359,549.842,386.152",
-
-            "Academic Achievement/Math/Catch Up": "224.640,345.359,230.763,355.672",
-            "Academic Achievement/Math/Catch Up/Count": "422.880,345.359,435.125,356.152",
-            "Academic Achievement/Math/Catch Up/Percent": "605.160,345.359,641.162,356.152",
-            "Academic Achievement/Math/Catch Up/Reduction": "698.040:15,345.359,734.042:15,356.152",
-
-            "Academic Achievement/Math/Keep Up": "224.640,315.359,230.763,325.672",
-            "Academic Achievement/Math/Keep Up/Count": "419.880,315.359,438.248,326.152",
-            "Academic Achievement/Math/Keep Up/Percent": "605.160,315.359,641.162,326.152",
-            "Academic Achievement/Math/Keep Up/Reduction": "698.040:15,315.359,734.042:15,326.152",
-
-            # ===========================================================================
-            # Academic Achievement/Reading
-            # ===========================================================================
-            "Academic Achievement/Reading": "219.960,255.239,235.445,265.552",
-            "Academic Achievement/Reading/Count": "419.280,255.239,437.648,266.032",
-            "Academic Achievement/Reading/Pct. Proficient": "512.280,255.239,548.283,266.032",
-
-            "Academic Achievement/Reading/Catch Up": "224.640,225.239,230.763,235.552",
-            "Academic Achievement/Reading/Catch Up/Count": "422.880,225.239,435.125,236.032",
-            "Academic Achievement/Reading/Catch Up/Percent": "605.160,225.239,641.162,236.032",
-            "Academic Achievement/Reading/Catch Up/Reduction": "712.920:15,225.239,719.042:15,236.032",
-
-            "Academic Achievement/Reading/Keep Up": "219.960,195.239,235.445,205.552",
-            "Academic Achievement/Reading/Keep Up/Count": "419.880,195.239,438.248,206.032",
-            "Academic Achievement/Reading/Keep Up/Percent": "605.160,195.239,641.162,206.032",
-            "Academic Achievement/Reading/Keep Up/Reduction": "712.920:15,195.239,719.042:15,206.032",
-        }
-
-        textboxes = doc.xpath("//page[@id='2']//textbox")
-        for textbox in textboxes:
-            for category, location in p2_categories.iteritems():
-                match = create_boundaries(location).search(textbox.attrib['bbox'])
-                if match and category not in ret:
-                    ret[category] = extract_text(textbox, category)
-
-        # Fill in any missing values
-        missing_keys = set(p2_categories.keys()) - set(ret.keys())
-        for missing_key in missing_keys:
-            ret[missing_key] = '*** Missing value ***'
-
-        ###########################################################################
-        p3_categories = {
-            "Growth Gaps/Eligible": "317.880,334.444,329.169,344.040",
-
-            # ===========================================================================
-            # Growth Gaps/Math
-            # ===========================================================================
-            "Growth Gaps/Math/FRLE": "234.360,519.725,238.916,527.874",
-              "Growth Gaps/Math/FRLE/Eligible": "321.240,519.725,325.796,527.874",
-              "Growth Gaps/Math/FRLE/Count": "421.560,519.725,435.229,527.874",
-              "Growth Gaps/Math/FRLE/MGP": "513.720,519.725,522.833,527.874",
-              "Growth Gaps/Math/FRLE/MAGP": "618.600,519.725,627.713,527.874",
-              "Growth Gaps/Math/FRLE/MAG": "712.560,519.725,725.402,527.874",
-
-            "Growth Gaps/Math/Minority": "234.360,498.725,238.916,506.874",
-              "Growth Gaps/Math/Minority/Eligible": "321.240,498.725,325.796,506.874",
-              "Growth Gaps/Math/Minority/Count": "421.560,498.725,435.229,506.874",
-              "Growth Gaps/Math/Minority/MGP": "513.720,498.725,522.833,506.874",
-              "Growth Gaps/Math/Minority/MAGP": "618.600,498.725,627.713,506.874",
-              "Growth Gaps/Math/Minority/MAG": "712.560,498.725,725.402,506.874",
-
-            "Growth Gaps/Math/Disability": "234.360,477.725,238.916,485.874",
-              "Growth Gaps/Math/Disability/Eligible": "321.240,477.725,325.796,485.874",
-              "Growth Gaps/Math/Disability/Count": "423.840,477.725,432.953,485.874",
-              "Growth Gaps/Math/Disability/MGP": "513.720,477.725,522.833,485.874",
-              "Growth Gaps/Math/Disability/MAGP": "618.600,477.725,627.713,485.874",
-              "Growth Gaps/Math/Disability/MAG": "713.640,477.725,724.320,485.874",
-
-            "Growth Gaps/Math/LEP": "234.360,456.485,238.916,464.634",
-              "Growth Gaps/Math/LEP/Eligible": "321.240,456.485,325.796,464.634",
-              "Growth Gaps/Math/LEP/Count": "423.840,456.485,432.953,464.634",
-              "Growth Gaps/Math/LEP/MGP": "513.720,456.485,522.833,464.634",
-              "Growth Gaps/Math/LEP/MAGP": "618.600,456.485,627.713,464.634",
-              "Growth Gaps/Math/LEP/MAG": "712.560,456.485,725.402,464.634",
-
-            # ===========================================================================
-            # Growth Gaps/Reading
-            # ===========================================================================
-            "Growth Gaps/Reading/FRLE": "234.360,399.725,238.916,407.874",
-              "Growth Gaps/Reading/FRLE/Eligible": "321.240,420.725,325.796,428.874",
-              "Growth Gaps/Reading/FRLE/Count": "421.560,420.725,435.229,428.874",
-              "Growth Gaps/Reading/FRLE/MGP": "513.720,420.725,522.833,428.874",
-              "Growth Gaps/Reading/FRLE/MAGP": "618.600,420.725,627.713,428.874",
-              "Growth Gaps/Reading/FRLE/MAG": "713.640,420.725,724.320,428.874",
-
-            "Growth Gaps/Reading/Minority": "234.360,399.725,238.916,407.874",
-              "Growth Gaps/Reading/Minority/Eligible": "321.240,399.725,325.796,407.874",
-              "Growth Gaps/Reading/Minority/Count": "421.560,399.725,435.229,407.874",
-              "Growth Gaps/Reading/Minority/MGP": "513.720,399.725,522.833,407.874",
-              "Growth Gaps/Reading/Minority/MAGP": "618.600,399.725,627.713,407.874",
-              "Growth Gaps/Reading/Minority/MAG": "713.640,399.725,724.320,407.874",
-
-            "Growth Gaps/Reading/Disability": "231.240,378.725,242.162,386.874",
-              "Growth Gaps/Reading/Disability/Eligible": "321.240,378.725,325.796,386.874",
-              "Growth Gaps/Reading/Disability/Count": "423.840,378.725,432.953,386.874",
-              "Growth Gaps/Reading/Disability/MGP": "513.720,378.725,522.833,386.874",
-              "Growth Gaps/Reading/Disability/MAGP": "618.600,378.725,627.713,386.874",
-              "Growth Gaps/Reading/Disability/MAG": "713.640,378.725,724.320,386.874",
-
-            "Growth Gaps/Reading/LEP": "231.240,357.365,242.162,365.514",
-              "Growth Gaps/Reading/LEP/Eligible": "321.240,357.365,325.796,365.514",
-              "Growth Gaps/Reading/LEP/Count": "423.840,357.365,432.953,365.514",
-              "Growth Gaps/Reading/LEP/MGP": "513.720,357.365,522.833,365.514",
-              "Growth Gaps/Reading/LEP/MAGP": "618.600,357.365,627.713,365.514",
-              "Growth Gaps/Reading/LEP/MAG": "713.640,357.365,724.320,365.514",
-
-            # ===========================================================================
-            # Other Factors
-            # ===========================================================================
-            "Other Factors/Avg. Daily Attendance": "234.360,285.605,238.916,293.754",
-              "Other Factors/Avg. Daily Attendance/Eligible": "321.240,285.605,325.796,293.754",
-              "Other Factors/Avg. Daily Attendance/Rate 2010-2011": "506.280,285.605,533.266,293.754",
-
-            "Other Factors/LEP/Count": "426.840,258.605,435.953,266.754",
-
-              "Other Factors/LEP (>24pt gain)": "231.240,267.605,242.162,275.754",
-                "Other Factors/LEP (>24pt gain)/Eligible": "321.240,267.605,325.796,275.754",
-                "Other Factors/LEP (>24pt gain)/Rate 2010-2011": "507.840:12,267.605,534.706:12,275.754",
-                "Other Factors/LEP (>24pt gain)/Rate 2009-2010": "610.200:12,267.605,637.186:12,275.754",
-
-              "Other Factors/LEP (Attain lvl 5)": "231.240,249.485,242.162,257.634",
-                "Other Factors/LEP (Attain lvl 5)/Eligible": "321.240,249.485,325.796,257.634",
-                "Other Factors/LEP (Attain lvl 5)/Rate 2010-2011": "507.840:12,249.485,534.706:12,257.634",
-                "Other Factors/LEP (Attain lvl 5)/Rate 2009-2010": "610.200:12,249.485,637.186:12,257.634",
-
-            "Other Factors/IEP": "234.360,219.605,238.916,227.754",
-              "Other Factors/IEP/Eligible": "321.240,219.605,325.796,227.754",
-              "Other Factors/IEP/Count": "426.840,219.605,435.953,227.754",
-
-              "Other Factors/IEP (>=80%)/Rate 2010-2011": "507.840:12,228.605,534.706:12,236.754",
-              "Other Factors/IEP (>=80%)/Rate 2009-2010": "610.200:12,228.605,637.186:12,236.754",
-
-              "Other Factors/IEP (Gen Ed)/Rate 2010-2011": "507.840:12,210.485,534.706:12,218.634",
-              "Other Factors/IEP (Gen Ed)/Rate 2009-2010": "610.186:12,210.485,637.172:12,218.634",
-
-            "Other Factors/6th Grade": "234.360,189.605,238.916,197.754",
-              "Other Factors/6th Grade/Eligible": "321.240,189.605,325.796,197.754",
-              "Other Factors/6th Grade/Count": "424.560,189.605,438.229,197.754",
-              "Other Factors/6th Grade/Rate 2010-2011": "507.830:12,189.605,534.697:12,197.754",
-              "Other Factors/6th Grade/Rate 2009-2010": "610.200:12,189.605,637.186:12,197.754",
-
-            "Other Factors/Student Survey Positive": "234.360,171.605,238.916,179.754",
-              "Other Factors/Student Survey Positive/Eligible": "321.240,171.605,325.796,179.754",
-              "Other Factors/Student Survey Positive/Count": "426.840,171.605,435.953,179.754",
-              "Other Factors/Student Survey Positive/Rate 2010-2011": "507.840:12,171.605,534.706:12,179.754",
-
-            "Other Factors/Parent Engagement Plan": "234.360,153.605,238.916,161.754",
-              "Other Factors/Parent Engagement Plan/Eligible": "321.240,153.605,325.796,161.754",
-        }
-
-        textboxes = doc.xpath("//page[@id='3']//textbox")
-        for textbox in textboxes:
-            for category, location in p3_categories.iteritems():
-                match = create_boundaries(location).search(textbox.attrib['bbox'])
-                if match and category not in ret:
-                    ret[category] = extract_text(textbox, category)
-
-        # Fill in any missing values
-        missing_keys = set(p3_categories.keys()) - set(ret.keys())
-        for missing_key in missing_keys:
-            ret[missing_key] = '*** Missing value ***'
+    for page in pages:
+        ret.update(process_page(page))
 
     return ret
 
@@ -300,15 +118,18 @@ def main():
     from operator import itemgetter
     parser = argparse.ArgumentParser()
     parser.add_argument("input", nargs='+', metavar="XML")
-    parser.add_argument("-t", "--school-type")
+    parser.add_argument("-c", "--config", required=True)
     parser.add_argument("-o", "--output", default="output.csv")
     args = parser.parse_args()
 
     output = tablib.Dataset()
+    config = SafeConfigParser()
+    config.optionxform = lambda value: value
+    config.read([args.config])
 
     for fname in args.input:
         print "Parsing '%s'..." % fname
-        info = extract_from_pdf(fname, args.school_type)
+        info = extract_from_pdf(fname, config)
         values = []
 
         if not output.headers:

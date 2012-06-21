@@ -1,4 +1,5 @@
 import re
+from ConfigParser import SafeConfigParser
 from extract_information import extract_from_pdf
 
 ELEMENTARY_SCHOOL_POINTS = {
@@ -138,8 +139,8 @@ ELEMENTARY_SCHOOL_POINTS = {
           'Other Factors/IEP/Eligible': '2',
           'Other Factors/IEP/Count': '87',
 
-          "Other Factors/IEP (>=80%)/Rate 2010-2011": "52.87%",
-          "Other Factors/IEP (>=80%)/Rate 2009-2010": "62.03%",
+          "Other Factors/IEP (gte 80 pct)/Rate 2010-2011": "52.87%",
+          "Other Factors/IEP (gte 80 pct)/Rate 2009-2010": "62.03%",
 
           "Other Factors/IEP (Gen Ed)/Rate 2010-2011": "67.86%",
           "Other Factors/IEP (Gen Ed)/Rate 2009-2010": "66.72%",
@@ -223,24 +224,22 @@ ELEMENTARY_SCHOOL_POINTS = {
     },
 }
 
-def check_school_values(fname, school_type):
+config = SafeConfigParser()
+config.optionxform = lambda value: value
+
+def check_school_values(fname, config):
     correct_values = ELEMENTARY_SCHOOL_POINTS.get(fname)
-    info = extract_from_pdf(fname, school_type)
+    info = extract_from_pdf(fname, config)
 
     for key in correct_values.iterkeys():
         assert_string = "got: %r, correct: %r for key: %r" % (info[key], correct_values[key], key)
         assert info[key] == correct_values[key], assert_string
 
 def test_elementary_school():
+    config.read(['es-config.ini'])
     for fname in ELEMENTARY_SCHOOL_POINTS.iterkeys():
-        yield check_school_values, fname, 'ES'
+        yield check_school_values, fname, config
 
-def test_middle_school():
-    for fname in MIDDLE_SCHOOL_POINTS.iterkeys():
-        yield check_school_values, fname, 'MS'
-
-def test_middle_school():
-    pass
-
-def test_high_scool():
-    pass
+# def test_middle_school():
+#     for fname in MIDDLE_SCHOOL_POINTS.iterkeys():
+#         yield check_school_values, fname, 'MS'

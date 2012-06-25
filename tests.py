@@ -421,6 +421,10 @@ MIDDLE_SCHOOL_POINTS = {
     'xml/MS/611-Hughes, Charles Arthur MS.xml': {
         'Other Indicators'     : '9',
     },
+
+    'xml/MS/231-Fremont, John C Professional Development MS.xml': {
+        'Academic Achievement/Reading/Keep Up': '0',
+    },
 }
 
 config = SafeConfigParser()

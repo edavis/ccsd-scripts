@@ -348,40 +348,55 @@ MIDDLE_SCHOOL_POINTS = {
         # Other Factors
         # ===========================================================================
         'Other Factors/Avg. Daily Attendance': '2',
-        #   'Other Factors/Avg. Daily Attendance/Eligible': '2',
-        #   'Other Factors/Avg. Daily Attendance/Rate 2010-2011': '95.90%',
+        'Other Factors/Avg. Daily Attendance/Eligible': '2',
+        'Other Factors/Avg. Daily Attendance/Rate 2010-2011': '95.90%',
 
         'Other Factors/6th Grade Drop Out Rate': '1',
+        'Other Factors/6th Grade Drop Out Rate/Eligible': '1',
+        'Other Factors/6th Grade Drop Out Rate/Rate 2010-2011': '2.00%',
 
         'Other Factors/7th Grade Drop Out Rate': '1',
+        'Other Factors/7th Grade Drop Out Rate/Eligible': '1',
+        'Other Factors/7th Grade Drop Out Rate/Rate 2010-2011': '0.90%',
 
         'Other Factors/Student Overall Positive': '0',
+        'Other Factors/Student Overall Positive/Eligible': '1',
+        'Other Factors/Student Overall Positive/Count': '7',
+        'Other Factors/Student Overall Positive/Rate 2010-2011': '74.69%',
 
-        # 'Other Factors/LEP/Count': '52',
+        'Other Factors/LEP/Count': '35',
 
         'Other Factors/LEP (>24pt gain)': '0',
-        #   'Other Factors/LEP (>24pt gain)/Eligible': '1',
-        #   "Other Factors/LEP (>24pt gain)/Rate 2010-2011": "71.15%",
-        #   "Other Factors/LEP (>24pt gain)/Rate 2009-2010": "81.16%",
+        'Other Factors/LEP (>24pt gain)/Eligible': '0.5',
+        'Other Factors/LEP (>24pt gain)/Rate 2010-2011': '28.57%',
+        'Other Factors/LEP (>24pt gain)/Rate 2009-2010': '31.43%',
 
         'Other Factors/LEP (Attain lvl 5)': '0.5',
-        #   'Other Factors/LEP (Attain lvl 5)/Eligible': '1',
-        #   "Other Factors/LEP (Attain lvl 5)/Rate 2010-2011": "25.00%",
-        #   "Other Factors/LEP (Attain lvl 5)/Rate 2009-2010": "23.19%",
+        'Other Factors/LEP (Attain lvl 5)/Eligible': '0.5',
+        'Other Factors/LEP (Attain lvl 5)/Rate 2010-2011': '40.00%',
+        'Other Factors/LEP (Attain lvl 5)/Rate 2009-2010': '25.71%',
 
         'Other Factors/IEP': '1',
-        #   'Other Factors/IEP/Eligible': '2',
-        #   'Other Factors/IEP/Count': '87',
+        'Other Factors/IEP/Eligible': '1',
+        'Other Factors/IEP/Count': '117',
 
-        #   "Other Factors/IEP (gte 80 pct)/Rate 2010-2011": "52.87%",
-        #   "Other Factors/IEP (gte 80 pct)/Rate 2009-2010": "62.03%",
+        'Other Factors/IEP (gte 80 pct)/Rate 2010-2011': '69.23%',
+        'Other Factors/IEP (gte 80 pct)/Rate 2009-2010': '62.02%',
 
-        #   "Other Factors/IEP (Gen Ed)/Rate 2010-2011": "67.86%",
-        #   "Other Factors/IEP (Gen Ed)/Rate 2009-2010": "66.72%",
+        'Other Factors/IEP (Gen Ed)/Rate 2010-2011': '80.04%',
+        'Other Factors/IEP (Gen Ed)/Rate 2009-2010': '78.37%',
 
         'Other Factors/Algebra I Enrollment': '0',
+        'Other Factors/Algebra I Enrollment/Eligible': '1',
+        'Other Factors/Algebra I Enrollment/Count': '634',
+        'Other Factors/Algebra I Enrollment/Rate 2010-2011': '20.66%',
+        'Other Factors/Algebra I Enrollment/Rate 2009-2010': '21.37%',
 
         'Other Factors/Accelerated Course Enrollment': '1',
+        'Other Factors/Accelerated Course Enrollment/Eligible': '1',
+        'Other Factors/Accelerated Course Enrollment/Count': '1781',
+        'Other Factors/Accelerated Course Enrollment/Rate 2010-2011': '68.89%',
+        'Other Factors/Accelerated Course Enrollment/Rate 2009-2010': '68.12%',
 
         # 'Other Factors/6th Grade': '0',
         #   'Other Factors/6th Grade/Eligible': '2',
@@ -395,7 +410,7 @@ MIDDLE_SCHOOL_POINTS = {
         #   'Other Factors/Student Survey Positive/Rate 2010-2011': '96.03%',
 
         'Other Factors/Parent Engagement Plan': '3',
-        #   'Other Factors/Parent Engagement Plan/Eligible': '3',
+        'Other Factors/Parent Engagement Plan/Eligible': '3',
     },
 
     'xml/MS/336-Swainston, Theron L MS.xml': {

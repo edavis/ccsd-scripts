@@ -6,3 +6,6 @@ pdf
 *.txt
 *.csv
 !README.txt
+*.tiff
+*.log
+*.xls

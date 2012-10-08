@@ -31,7 +31,8 @@ def extract_region(image, coordinates):
     output = hashlib.md5(image + coordinates).hexdigest()
     output = os.path.join('regions', output + '.tiff')
     if not os.path.exists(output):
-        print "extracting region"
+        print("extracting_region(%r, %r)" % (image, coordinates))
+        print(" -> '%s'" % output)
         # Cache the Image object to speed things up.
         #
         # This way, we only open an original image up once and crop as
@@ -64,7 +65,6 @@ def extract_text(region):
     (base, ext) = os.path.splitext(region)
     txt = base + '.txt'
     if not os.path.exists(txt):
-        print "ocr-ing text"
         cmd = "tesseract {} {} -psm 7 &>/dev/null"
         os.system(cmd.format(region, base))
 

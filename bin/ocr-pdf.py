@@ -88,7 +88,7 @@ def main(args):
         tiff_dir_basename = os.path.basename(tiff_dir)
         results[tiff_dir_basename] = defaultdict(dict)
 
-        print tiff_dir_basename
+        print("Processing '{}'".format(tiff_dir_basename))
 
         for section in config.sections():
             if section == 'pages':

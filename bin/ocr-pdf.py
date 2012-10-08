@@ -77,7 +77,6 @@ def main(args):
     config.optionxform = lambda opt: opt
     config.read([args.config])
 
-    log = open('output.log', 'w')
     results = {}
 
     for tiff_dir in os.listdir(args.tiff_dir):
@@ -106,31 +105,16 @@ def main(args):
                 text = extract_text(region)
                 results[tiff_dir_basename][section][option_key] = text
 
-    results = sorted(results.iteritems(), key=itemgetter(0))
-    for school, values in results:
-        print '--> {} <--'.format(school)
-        pprint.pprint(dict([category, dict(e)] for category, e in values.items()))
-
-        # for section in config.sections():
-        #     options = dict(config.items(section))
-        #     page = int(options.pop('page'))
-        #     active_page = tiff_files[page]
-
-        #     print "--> %s" % active_page
-        #     log.write("--> %s\n" % active_page)
-
-        #     for (key, coordinates) in sorted(options.items()):
-        #         region = extract_region(active_page, coordinates)
-        #         text = extract_text(region)
-        #         info = (region, key, text) if args.verbose else (key, text)
-        #         log.write(repr(info) + '\n')
+    if args.section:
+        print results[tiff_dir_basename][args.section]
+    else:
+        print results
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')
     parser.add_argument('-t', '--tiff-dir')
-    parser.add_argument('-o', '--output')
-    parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('-s', '--section')
     args = parser.parse_args()
     main(args)

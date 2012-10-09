@@ -72,22 +72,42 @@ def extract_text(region):
         content = fp.read().strip()
         return {'O': '0', '_': '-'}.get(content, content)
 
-def main(args):
+def build_config(config_file):
+    """
+    Build a ConfigParser object.
+
+    Two notes:
+    - Use ExtendedInterpolation
+    - Don't downcase key names
+    """
     config = ConfigParser(interpolation=ExtendedInterpolation())
     config.optionxform = lambda opt: opt
-    config.read([args.config])
+    config.read([config_file])
+    return config
 
+def get_tiff_files(tiff_dir):
+    """
+    >>> result = get_tiff_files('tiff/')
+    >>> result[0]
+    '245-Mojave HS'
+    >>> result[1]
+    {1: 'tiff/245-Mojave HS/page_01.tiff', 2: ...}
+    """
+    for school in os.listdir(tiff_dir):
+        full_tiff_dir = os.path.join(tiff_dir, school)
+        tiff_files = {n: os.path.join(full_tiff_dir, 'page_%02d.tiff' % n) for n in xrange(1, 5)}
+        yield (school, tiff_files)
+
+def main(args):
+    config = build_config(args.config)
     results = {}
 
-    for tiff_dir in os.listdir(args.tiff_dir):
-        tiff_dir = os.path.join(args.tiff_dir, tiff_dir)
-        tiff_files = sorted(glob.glob(tiff_dir + '/*.tiff'))
-        tiff_files = {idx+1: tiff for (idx, tiff) in enumerate(tiff_files)}
+    for school, tiff_files in get_tiff_files(args.tiff_dir):
+        if args.school and (not re.search(args.school, school)):
+            continue
 
-        tiff_dir_basename = os.path.basename(tiff_dir)
-        results[tiff_dir_basename] = defaultdict(dict)
-
-        print("Processing '{}'".format(tiff_dir_basename))
+        print("Processing '{}'".format(school))
+        results[school] = defaultdict(dict)
 
         for section in config.sections():
             if section == 'pages':
@@ -95,7 +115,7 @@ def main(args):
 
             page = int(config[section].get('page'))
             active_image = tiff_files[page]
-            results[tiff_dir_basename][section] = defaultdict(dict)
+            results[school][section] = defaultdict(dict)
 
             for (option_key, option_value) in config[section].items():
                 if option_key == 'page':
@@ -103,12 +123,18 @@ def main(args):
 
                 region = extract_region(active_image, option_value)
                 text = extract_text(region)
-                results[tiff_dir_basename][section][option_key] = text
+                results[school][section][option_key] = text
 
-    if args.section:
-        print results[tiff_dir_basename][args.section]
-    else:
-        print results
+    if args.school:
+        for school, sections in results.iteritems():
+            if args.school and (not re.search(args.school, school)):
+                continue
+            for (section, values) in sections.iteritems():
+                if args.section and (not re.search(args.section, section)):
+                    continue
+                print("Section: {}".format(section))
+                pprint.pprint(dict(values))
+                print("")
 
 if __name__ == "__main__":
     import argparse
@@ -116,5 +142,6 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config')
     parser.add_argument('-t', '--tiff-dir')
     parser.add_argument('-s', '--section')
+    parser.add_argument('--school')
     args = parser.parse_args()
     main(args)

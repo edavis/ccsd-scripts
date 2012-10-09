@@ -121,6 +121,27 @@ def write_to_csv(results, output):
     with open(output, 'wb') as fp:
         fp.write(data.csv)
 
+def display_summary(results, args):
+    """
+    Display a summary of the results.
+
+    With only a 'school' argument provided, display all values from
+    that school.
+
+    If a 'section' argument is provided, display values matching that
+    section regex.
+    """
+    if args.school:
+        for school, sections in results.iteritems():
+            if args.school and (not re.search(args.school, school)):
+                continue
+            for (section, values) in sections.iteritems():
+                if args.section and (not re.search(args.section, section)):
+                    continue
+                print("Section: {}".format(section))
+                pprint.pprint(dict(values))
+                print("")
+
 def main(args):
     config = build_config(args.config)
     results = {}
@@ -148,16 +169,7 @@ def main(args):
                 text = extract_text(region)
                 results[school][section][option_key] = text
 
-    if args.school:
-        for school, sections in results.iteritems():
-            if args.school and (not re.search(args.school, school)):
-                continue
-            for (section, values) in sections.iteritems():
-                if args.section and (not re.search(args.section, section)):
-                    continue
-                print("Section: {}".format(section))
-                pprint.pprint(dict(values))
-                print("")
+    display_summary(results, args)
     write_to_csv(results, args.output)
 
 if __name__ == "__main__":

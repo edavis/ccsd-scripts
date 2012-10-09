@@ -11,6 +11,7 @@ from operator import itemgetter
 from configparser import ConfigParser, ExtendedInterpolation
 
 IMAGE_CACHE = {'active': None, 'im': None}
+COMMON_TRANSLATIONS = {'O': '0', '_': '-'}
 
 def coords(coord):
     """
@@ -70,7 +71,7 @@ def extract_text(region):
 
     with open(txt) as fp:
         content = fp.read().strip()
-        return {'O': '0', '_': '-'}.get(content, content)
+        return COMMON_TRANSLATIONS.get(content, content)
 
 def build_config(config_file):
     """

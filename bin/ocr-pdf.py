@@ -4,7 +4,9 @@ import re
 import os
 import glob
 import pprint
+import tablib
 import hashlib
+import operator
 import Image, ImageOps
 from collections import defaultdict
 from operator import itemgetter
@@ -99,6 +101,26 @@ def get_tiff_files(tiff_dir):
         tiff_files = {n: os.path.join(full_tiff_dir, 'page_%02d.tiff' % n) for n in xrange(1, 5)}
         yield (school, tiff_files)
 
+def write_to_csv(results, output):
+    """
+    Create a CSV file of results in output.
+    """
+    data = tablib.Dataset(headers=[])
+    for (school, sections) in sorted(results.iteritems(), key=operator.itemgetter(0)):
+        all_values = []
+        headers = []
+        for (section, values) in sections.iteritems():
+            for (key, value) in values.iteritems():
+                headers.append('/'.join([section, key]))
+                all_values.append(value)
+        data.append([school] + all_values)
+        if not data.headers:
+            headers.insert(0, 'school')
+            data.headers = headers
+
+    with open(output, 'wb') as fp:
+        fp.write(data.csv)
+
 def main(args):
     config = build_config(args.config)
     results = {}
@@ -136,6 +158,7 @@ def main(args):
                 print("Section: {}".format(section))
                 pprint.pprint(dict(values))
                 print("")
+    write_to_csv(results, args.output)
 
 if __name__ == "__main__":
     import argparse
@@ -144,5 +167,6 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--tiff-dir')
     parser.add_argument('-s', '--section')
     parser.add_argument('--school')
+    parser.add_argument('-o', '--output', default='output.csv')
     args = parser.parse_args()
     main(args)

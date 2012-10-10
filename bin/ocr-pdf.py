@@ -107,14 +107,15 @@ def write_to_csv(results, output):
     """
     data = tablib.Dataset(headers=[])
     for (school, sections) in sorted(results.iteritems(), key=operator.itemgetter(0)):
-        all_values = []
-        headers = []
+        school_values = {}
         for (section, values) in sections.iteritems():
             for (key, value) in values.iteritems():
-                headers.append('/'.join([section, key]))
-                all_values.append(value)
-        data.append([school] + all_values)
+                school_values['/'.join([section, key])] = value
+
+        school_values = sorted(school_values.iteritems(), key=operator.itemgetter(0))
+        data.append([school] + [value for key, value in school_values])
         if not data.headers:
+            headers = [key for key, value in school_values]
             headers.insert(0, 'school')
             data.headers = headers
 

@@ -3,6 +3,7 @@
 import re
 import os
 import glob
+import redis
 import pprint
 import tablib
 import hashlib
@@ -14,6 +15,8 @@ from configparser import ConfigParser, ExtendedInterpolation
 
 IMAGE_CACHE = {'active': None, 'im': None}
 COMMON_TRANSLATIONS = {'O': '0', '_': '-'}
+
+redis_conn = redis.StrictRedis()
 
 def coords(coord):
     """
@@ -65,15 +68,18 @@ def extract_text(region):
     """
     Return a given region's text via OCR.
     """
-    (base, ext) = os.path.splitext(region)
-    txt = base + '.txt'
-    if not os.path.exists(txt):
+    if not redis_conn.exists(region):
         cmd = "tesseract {} {} -psm 7 &>/dev/null"
-        os.system(cmd.format(region, base))
+        os.system(cmd.format(region, "output"))
 
-    with open(txt) as fp:
-        content = fp.read().strip()
-        return COMMON_TRANSLATIONS.get(content, content)
+        with open("output.txt") as fp:
+            content = fp.read().strip()
+            content = COMMON_TRANSLATIONS.get(content, content)
+
+        redis_conn.set(region, content)
+        return content
+    else:
+        return redis_conn.get(region)
 
 def build_config(config_file):
     """

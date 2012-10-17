@@ -142,7 +142,7 @@ def display_summary(results, args):
         for school, sections in results.iteritems():
             if args.school and (not re.search(args.school, school)):
                 continue
-            for (section, values) in sections.iteritems():
+            for (section, values) in sorted(sections.iteritems(), key=itemgetter(0)):
                 if args.section and (not re.search(args.section, section)):
                     continue
                 print("Section: {}".format(section))

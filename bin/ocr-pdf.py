@@ -154,6 +154,7 @@ def main(args):
     results = {}
 
     for school, tiff_files in get_tiff_files(args.tiff_dir):
+        # if --school given, parse on that school
         if args.school and (not re.search(args.school, school)):
             continue
 

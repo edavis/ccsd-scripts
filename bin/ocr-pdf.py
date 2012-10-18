@@ -164,14 +164,16 @@ def main(args):
             if section == 'pages':
                 continue
 
-            page = int(config[section].get('page'))
+            if '/' in section:
+                main_section = section.split('/')[0]
+            else:
+                main_section = section
+
+            page = int(config['pages'].get(main_section))
             active_image = tiff_files[page]
             results[school][section] = defaultdict(dict)
 
             for (option_key, option_value) in config[section].items():
-                if option_key == 'page':
-                    continue
-
                 region = extract_region(active_image, option_value)
                 text = extract_text(region)
                 results[school][section][option_key] = text

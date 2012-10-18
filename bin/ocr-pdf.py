@@ -182,6 +182,9 @@ def main(args):
     write_to_csv(results, args.output)
 
 if __name__ == "__main__":
+    if not os.path.exists('regions'):
+        os.mkdir('regions')
+
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')

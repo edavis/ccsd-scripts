@@ -99,10 +99,10 @@ def get_tiff_files(tiff_dir):
     >>> result[0]
     '245-Mojave HS'
     >>> result[1]
-    {1: 'tiff/245-Mojave HS/page_01.tiff', 2: ...}
+    {1: '/path/to/tiff/245-Mojave HS/page_01.tiff', 2: ...}
     """
     for school in os.listdir(tiff_dir):
-        full_tiff_dir = os.path.join(tiff_dir, school)
+        full_tiff_dir = os.path.abspath(os.path.join(tiff_dir, school))
         tiff_files = {n: os.path.join(full_tiff_dir, 'page_%02d.tiff' % n) for n in xrange(1, 5)}
         yield (school, tiff_files)
 

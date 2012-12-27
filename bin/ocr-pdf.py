@@ -71,6 +71,7 @@ def extract_text(region):
     Return a given region's text via OCR.
     """
     if not redis_conn.exists(region):
+        print("extract_text(%r) [not in redis]" % region)
         cmd = "tesseract {} {} -psm 7 &>/dev/null"
         os.system(cmd.format(region, "output"))
 
@@ -81,6 +82,7 @@ def extract_text(region):
         redis_conn.set(region, content)
         return content
     else:
+        print("extract_text(%r) [in redis]" % region)
         return redis_conn.get(region)
 
 def build_config(config_file):

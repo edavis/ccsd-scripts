@@ -34,7 +34,10 @@ def extract_region(image, coordinates):
     Crop the given image using the given coordinates into output file.
     """
     output = hashlib.md5(image + coordinates).hexdigest()
-    output = os.path.join('regions', output + '.tiff')
+    root = '/var/ccsd-scripts/regions/%s/%s/' % (output[:2], output[2:4])
+    if not os.path.isdir(root):
+        os.makedirs(root)
+    output = os.path.join(root, output + '.tiff')
     if not os.path.exists(output):
         print("extracting_region(%r, %r)" % (image, coordinates))
         print(" -> '%s'" % output)

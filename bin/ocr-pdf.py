@@ -40,7 +40,6 @@ def extract_region(image, coordinates):
     output = os.path.join(root, output + '.tiff')
     if not os.path.exists(output):
         print("extracting_region(%r, %r)" % (image, coordinates))
-        print(" -> '%s'" % output)
         # Cache the Image object to speed things up.
         #
         # This way, we only open an original image up once and crop as
@@ -71,7 +70,7 @@ def extract_text(region):
     Return a given region's text via OCR.
     """
     if not redis_conn.exists(region):
-        print("extract_text(%r) [not in redis]" % region)
+        print("extract_text(%r)" % region)
         cmd = "tesseract {} {} -psm 7 &>/dev/null"
         os.system(cmd.format(region, "output"))
 
@@ -82,7 +81,6 @@ def extract_text(region):
         redis_conn.set(region, content)
         return content
     else:
-        print("extract_text(%r) [in redis]" % region)
         return redis_conn.get(region)
 
 def build_config(config_file):

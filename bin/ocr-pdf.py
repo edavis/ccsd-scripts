@@ -6,11 +6,14 @@ import redis
 import pprint
 import tablib
 import hashlib
+import pymongo
 import operator
 import Image, ImageOps
 from collections import defaultdict
 from operator import itemgetter
 from configparser import ConfigParser, ExtendedInterpolation
+
+ccsd_database = pymongo.Connection().ccsd
 
 IMAGE_CACHE = {'active': None, 'im': None}
 COMMON_TRANSLATIONS = {'O': '0', '_': '-'}
@@ -109,91 +112,55 @@ def get_tiff_files(tiff_dir):
         tiff_files = {n: os.path.join(full_tiff_dir, 'page_%02d.tiff' % n) for n in xrange(1, 5)}
         yield (school, tiff_files)
 
-def write_to_csv(results, output):
-    """
-    Create a CSV file of results in output.
-    """
-    data = tablib.Dataset(headers=[])
-    for (school, sections) in sorted(results.iteritems(), key=operator.itemgetter(0)):
-        school_values = {}
-        for (section, values) in sections.iteritems():
-            for (key, value) in values.iteritems():
-                school_values['/'.join([section, key])] = value
+def get_school_type(tiff_files):
+    fn = tiff_files[1]
+    if '/es/' in fn:
+        return 'Elementary'
+    elif '/ms/' in fn:
+        return 'Middle'
+    elif '/hs/' in fn:
+        return 'High'
 
-        school_values = sorted(school_values.iteritems(), key=operator.itemgetter(0))
-        data.append([school] + [value for key, value in school_values])
-        if not data.headers:
-            headers = [key for key, value in school_values]
-            headers.insert(0, 'school')
-            data.headers = headers
-
-    with open(output, 'wb') as fp:
-        fp.write(data.csv)
-
-def display_summary(results, args):
-    """
-    Display a summary of the results.
-
-    With only a 'school' argument provided, display all values from
-    that school.
-
-    If a 'section' argument is provided, display values matching that
-    section regex.
-    """
-    if args.school:
-        for school, sections in results.iteritems():
-            if args.school and (not re.search(args.school, school)):
-                continue
-            for (section, values) in sorted(sections.iteritems(), key=itemgetter(0)):
-                if args.section and (not re.search(args.section, section)):
-                    continue
-                print("Section: {}".format(section))
-                pprint.pprint(dict(values))
-                print("")
+def insert_documents(documents):
+    ccsd_database.ccsd.insert(documents, safe=True)
 
 def main(args):
     config = build_config(args.config)
-    results = {}
 
-    for school, tiff_files in get_tiff_files(args.tiff_dir):
-        # if --school given, parse on that school
-        if args.school and (not re.search(args.school, school)):
-            continue
-
+    for school, tiff_files in get_tiff_files('tiff'):
         print("Processing '{}'".format(school))
-        results[school] = defaultdict(dict)
+        (school_id, school_name) = school.split('-', 1)
+
+        documents = []
+        document = {
+            'school': {
+                'name': school_name,
+                'id': int(school_id),
+                'type': get_school_type(tiff_files),
+            },
+        }
 
         for section in config.sections():
-            if section == 'pages':
-                continue
+            (page, section_label) = section.split('-')
+            current_image = tiff_files[int(page)]
 
-            if '/' in section:
-                main_section = section.split('/')[0]
-            else:
-                main_section = section
+            for (category, coordinates) in config[section].items():
+                text = extract_text(extract_region(current_image, coordinates))
+                document['section'] = section_label
+                document['category'] = category
+                document['value'] = text
+                documents.append(document.copy())
 
-            page = int(config['pages'].get(main_section))
-            active_image = tiff_files[page]
-            results[school][section] = defaultdict(dict)
-
-            for (option_key, option_value) in config[section].items():
-                region = extract_region(active_image, option_value)
-                text = extract_text(region)
-                results[school][section][option_key] = text
-
-    display_summary(results, args)
-    write_to_csv(results, args.output)
+        insert_documents(documents)
 
 if __name__ == "__main__":
+    ccsd_database.ccsd.drop()
+
     if not os.path.exists('regions'):
         os.mkdir('regions')
 
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')
-    parser.add_argument('-t', '--tiff-dir')
-    parser.add_argument('-s', '--section')
-    parser.add_argument('--school')
-    parser.add_argument('-o', '--output', default='output.csv')
     args = parser.parse_args()
     main(args)

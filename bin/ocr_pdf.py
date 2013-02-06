@@ -141,12 +141,12 @@ def main(args):
         }
 
         for section in config.sections():
-            (page, section_label) = section.split('-')
+            (page, section_label) = section.split('-', 1)
             current_image = tiff_files[int(page)]
 
             for (category, coordinates) in config[section].items():
                 text = extract_text(extract_region(current_image, coordinates))
-                document['section'] = section_label
+                document['section'] = section
                 document['category'] = category
                 document['value'] = text
                 documents.append(document.copy())
@@ -154,10 +154,7 @@ def main(args):
         insert_documents(documents)
 
 if __name__ == "__main__":
-    ccsd_database.ccsd.drop()
-
-    if not os.path.exists('regions'):
-        os.mkdir('regions')
+    # ccsd_database.ccsd.drop()
 
     import argparse
     parser = argparse.ArgumentParser()

@@ -160,7 +160,10 @@ def main(args):
             current_image = tiff_files[int(page)]
 
             for (category, coordinates) in config[section].items():
-                text = extract_text(extract_region(current_image, coordinates))
+                if coordinates.startswith('!'):
+                    text = coordinates
+                else:
+                    text = extract_text(extract_region(current_image, coordinates))
                 document['section'] = section
                 document['category'] = category
                 document['value'] = text

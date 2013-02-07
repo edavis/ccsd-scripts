@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
+import re
 import tablib
 import pymongo
 import operator
 from ocr_pdf import build_config
 from collections import defaultdict
+import decimal
 
 conn = pymongo.Connection()
 db = conn.ccsd
@@ -36,15 +38,50 @@ def get_compare_function(section, config):
 
     return _cmp
 
+def add_extra(categories, value):
+    value = re.sub('^! *', '', value)
+    new_categories = {}
+
+    for key, category_value in categories.iteritems():
+        new = re.sub('[%/ ()-]', '_', key).lower()
+        new = re.sub('__+', '_', new)
+        new = re.sub('_-_', '_', new) # for IEP/LEP
+        new = re.sub('_$', '', new)
+
+        if category_value.isdigit():
+            category_value = int(category_value)
+
+        elif '%' in category_value:
+            category_value = category_value.replace('%', '')
+            category_value = decimal.Decimal(category_value) / decimal.Decimal('100')
+
+        new_categories[new] = category_value
+
+    try:
+        with decimal.localcontext() as ctx:
+            ctx.prec = 4
+            return eval(value, new_categories)
+    except (TypeError, decimal.InvalidOperation, decimal.DivisionByZero,
+            ZeroDivisionError):
+        return ''
+    except Exception:
+        raise
+
 def dict_to_dataset(ret, section, config):
     data = tablib.Dataset()
-    for school, categories in sorted(ret.iteritems(),
-                                     key=operator.itemgetter(0)):
+    compare_function = get_compare_function(section, config)
+
+    for school, categories in sorted(ret.iteritems(), key=operator.itemgetter(0)):
+        if not data.headers:
+            data.headers = ['School'] + sorted(categories.iterkeys(), cmp=compare_function)
+
         row = [school]
-        compare_function = get_compare_function(section, config)
         for label, value in sorted(categories.iteritems(),
                                    key=operator.itemgetter(0),
                                    cmp=compare_function):
+            if value.startswith('!'):
+                value = add_extra(categories, value)
+
             row.append(value)
         data.append(row)
     return data

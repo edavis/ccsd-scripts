@@ -124,8 +124,23 @@ def get_school_type(tiff_files):
 def insert_documents(documents):
     ccsd_database.ccsd.insert(documents, safe=True)
 
+def remove_existing_documents(config):
+    school_type = None
+
+    if 'hs.ini' in config:
+        school_type = 'High'
+    elif 'ms.ini' in config:
+        school_type = 'Middle'
+    elif 'es.ini' in config:
+        school_type = 'Elementary'
+
+    if school_type is not None:
+        ccsd_database.ccsd.remove({'school.type': school_type})
+
 def main(args):
     config = build_config(args.config)
+
+    remove_existing_documents(args.config)
 
     for school, tiff_files in get_tiff_files('tiff'):
         print("Processing '{}'".format(school))

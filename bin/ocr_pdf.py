@@ -168,9 +168,7 @@ def main(args):
             current_image = tiff_files[int(page)]
 
             for (category, coordinates) in config[section].items():
-                if coordinates.startswith('!'):
-                    text = coordinates
-                elif coordinates == '': # produce an empty column
+                if coordinates == '': # produce an empty column
                     text = ''
                 else:
                     text = extract_text(extract_region(current_image, coordinates))

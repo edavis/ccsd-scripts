@@ -4,7 +4,7 @@ import re
 import tablib
 import pymongo
 import operator
-from ocr_pdf import build_config
+from ocr_pdf import build_config, get_current_year
 from collections import defaultdict
 import decimal
 
@@ -16,6 +16,7 @@ def get_section(school_type, section):
     return ccsd.find({
         'school.type': school_type,
         'section': section,
+        'year': get_current_year(),
     })
 
 def section_to_dict(it):

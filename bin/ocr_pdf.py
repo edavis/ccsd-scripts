@@ -75,9 +75,9 @@ def extract_text(region):
     if not redis_conn.exists(region):
         print("extract_text(%r)" % region)
         cmd = "tesseract {} {} -psm 7 &>/dev/null"
-        os.system(cmd.format(region, "output"))
+        os.system(cmd.format(region, "/tmp/output"))
 
-        with open("output.txt") as fp:
+        with open("/tmp/output.txt") as fp:
             content = fp.read().strip()
             content = COMMON_TRANSLATIONS.get(content, content)
 
@@ -124,8 +124,15 @@ def get_school_type(tiff_files):
 def insert_documents(documents):
     ccsd_database.ccsd.insert(documents, safe=True)
 
+def get_current_year():
+    if '2010-11' in os.getcwd():
+        return '2010-11'
+    elif '2011-12' in os.getcwd():
+        return '2011-12'
+
 def remove_existing_documents(config):
     school_type = None
+    year = get_current_year()
 
     if 'hs.ini' in config:
         school_type = 'High'
@@ -134,12 +141,12 @@ def remove_existing_documents(config):
     elif 'es.ini' in config:
         school_type = 'Elementary'
 
-    if school_type is not None:
-        ccsd_database.ccsd.remove({'school.type': school_type})
+    if school_type is not None and year is not None:
+        ccsd_database.ccsd.remove({'school.type': school_type,
+                                   'year': year})
 
 def main(args):
     config = build_config(args.config)
-
     remove_existing_documents(args.config)
 
     for school, tiff_files in get_tiff_files('tiff'):
@@ -153,6 +160,7 @@ def main(args):
                 'id': int(school_id),
                 'type': get_school_type(tiff_files),
             },
+            'year': get_current_year(),
         }
 
         for section in config.sections():
@@ -162,6 +170,8 @@ def main(args):
             for (category, coordinates) in config[section].items():
                 if coordinates.startswith('!'):
                     text = coordinates
+                elif coordinates == '': # produce an empty column
+                    text = ''
                 else:
                     text = extract_text(extract_region(current_image, coordinates))
                 document['section'] = section
@@ -172,8 +182,6 @@ def main(args):
         insert_documents(documents)
 
 if __name__ == "__main__":
-    # ccsd_database.ccsd.drop()
-
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')

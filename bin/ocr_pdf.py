@@ -134,11 +134,11 @@ def remove_existing_documents(config):
     school_type = None
     year = get_current_year()
 
-    if 'hs.ini' in config:
+    if 'hs' in config:
         school_type = 'High'
-    elif 'ms.ini' in config:
+    elif 'ms' in config:
         school_type = 'Middle'
-    elif 'es.ini' in config:
+    elif 'es' in config:
         school_type = 'Elementary'
 
     if school_type is not None and year is not None:

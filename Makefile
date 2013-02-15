@@ -1,7 +1,15 @@
-all: 2010-11 2011-12
+all: tiff 2010-11 2011-12
 
 2010-11: 2010-11/es.csv 2010-11/ms.csv 2010-11/hs.csv
 2011-12: 2011-12/es.csv 2011-12/ms.csv 2011-12/hs.csv
+
+tiff:
+	cd 2010-11/es; ../../bin/pdf-to-tiff.sh
+	cd 2010-11/ms; ../../bin/pdf-to-tiff.sh
+	cd 2010-11/hs; ../../bin/pdf-to-tiff.sh
+	cd 2011-12/es; ../../bin/pdf-to-tiff.sh
+	cd 2011-12/ms; ../../bin/pdf-to-tiff.sh
+	cd 2011-12/hs; ../../bin/pdf-to-tiff.sh
 
 ###########################################################################
 
